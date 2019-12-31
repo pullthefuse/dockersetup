@@ -1,0 +1,67 @@
+parameters:
+  root_directory: '/data/docker-setup'
+  code_directory: '/data/docker-setup/code'
+  public_directory: '/public'
+  host_ip_address: '127.0.0.1'
+  host_file: '/data/docker-setup/etc/hosts'
+  docker:
+    version: 3
+    network: general
+    services:
+      nginx:
+        image: nginx:latest
+      db:
+        mysql:
+          '8.0':
+            image: mysql:8.0
+            port: 3306
+            command: --default-authentication-plugin=mysql_native_password
+          '5.7':
+            image: mysql:5.7
+            port: 3306
+          '5.6':
+            image: mysql:5.6
+            port: 3306
+      web:
+        php:
+          '7.4':
+            image: jamescastro/php:7.4.0-fpm-alpine3.10-dev
+          '7.3':
+            image: jamescastro/php:7.3-fpm-alpine3.10-dev
+        environment:
+          - XDEBUG_CONFIG: remote_host=192.168.1.216
+  http:
+    user: 'www-data'
+    worker_processes: 1
+    pid: '/run/nginx.pid'
+    events:
+      worker_connections: 1024
+      multi_accept: on
+    http:
+      client_body_buffer_size: 1m
+      client_max_body_size: 50m
+      keepalive_timeout: 65
+      sendfile: on
+      tcp_nopush: on
+      server_tokens: off
+      gzip: on
+      limit_conn_zone:
+        - $binary_remote_addr
+        - zone=addr:10m
+      limit_req_zone:
+        - $binary_remote_addr
+        - zone=one:10m
+        - rate=4r/s
+      ssl_protocols:
+        - TLSv1
+        - TLSv1.1
+        - TLSv1.2
+        - TLSv1.3
+      ssl_prefer_server_ciphers: on
+      default_type: 'application/octet-stream'
+      access_log: '/var/log/nginx/access.log'
+      error_log: '/var/log/nginx/error.log'
+    includes:
+      - '/etc/nginx/mime.types'
+      - '/etc/nginx/conf.d/*.conf'
+      - '/etc/nginx/sites-enabled/*.conf'

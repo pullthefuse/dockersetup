@@ -1,0 +1,47 @@
+version: "3"
+services:
+  nginx_dev_example_com:
+    image: nginx:latest
+    container_name: nginx_dev_example_com
+    volumes:
+      - /data/test/docker-setup/code/dev.example.com:/var/www/dev.example.com
+      - /data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf:/etc/nginx/sites-enabled/dev.example.com.conf
+      - /data/test/docker-setup/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web_dev_example_com
+    networks:
+      general:
+        aliases:
+          - dev.example.com
+  db_mysql:
+    image: mysql:8.0
+    container_name: db_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: db
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    volumes:
+      - /data/test/docker-setup/mysql:/var/lib/mysql
+    networks:
+      - general
+  web_dev_example_com:
+    image: jamescastro/php:7.4.0-fpm-alpine3.10-dev
+    container_name: web_dev_example_com
+    volumes:
+      - /data/test/docker-setup/code/dev.example.com:/var/www/dev.example.com
+      - /data/test/docker-setup/php/upload.ini:/usr/local/etc/php/conf.d/upload.ini
+      - /data/test/docker-setup/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - /data/test/docker-setup/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    working_dir: /data/test/docker-setup/code/dev.example.com
+    environment:
+      XDEBUG_CONFIG: remote_host=192.168.1.216
+    networks:
+      - general
+
+networks:
+  general:

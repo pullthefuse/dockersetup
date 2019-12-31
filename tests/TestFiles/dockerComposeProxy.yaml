@@ -1,0 +1,17 @@
+version: "3"
+services:
+  nginx_proxy:
+    image: nginx:latest
+    container_name: nginx_proxy
+    volumes:
+      - /data/test/docker-setup/nginx/proxy/sites-enabled:/etc/nginx/sites-enabled
+      - /data/test/docker-setup/nginx/proxy/nginx.conf:/etc/nginx/nginx.conf
+      - /data/test/docker-setup/tls:/etc/tls
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - general
+
+networks:
+  general:
