@@ -115,7 +115,7 @@ class SetupCommand extends Command
 
         $this->io->text('Creating docker-compose file...');
 
-        $this->dockerCompose->create($domain, $ssl);
+        $this->dockerCompose->create($domain, $this->io, $ssl);
 
         $input->setArgument('projectName', $domain);
         $question = new ChoiceQuestion('Create a new project?', array_merge(array_keys(Project::getList()), ['None']));
