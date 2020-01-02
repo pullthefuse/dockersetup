@@ -63,4 +63,14 @@ class DockerComposeFileTest extends AbstractTestCase
 
         $this->assertContains('Domain already exists', $output);
     }
+
+    /** @test */
+    public function check_that_exception_is_thrown_if_proxy_is_used_as_domain_name()
+    {
+        $this->expectException('App\Exception\DockerSetupException');
+
+        $output = $this->runApp(['url' => 'proxy', ['yes']]);
+
+        $this->assertContains('Proxy cannot be set as a domain. Aborting...', $output);
+    }
 }

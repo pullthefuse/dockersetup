@@ -21,4 +21,16 @@ interface DockerComposeInterface
      * @param string $domain
      */
     public function delete(string $domain): void;
+
+    /**
+     * Check whether setup has been run in the past.
+     *
+     * @return bool
+     */
+    public function isSetupComplete(): bool;
+
+    /**
+     * @param ConsoleStyle $io
+     */
+    public function setup(ConsoleStyle $io): void;
 }

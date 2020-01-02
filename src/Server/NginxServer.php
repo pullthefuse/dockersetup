@@ -38,17 +38,16 @@ class NginxServer extends AbstractServer
     {
         $ssl = $this->getSSL() ? 'SSL' : '';
 
-        $config = [
+        $content = $this->twig->render("server/nginx/server{$ssl}Block.html.twig", [
             'domain' => $domain,
             'publicDir' => Config::get('publicDirectory')
-        ];
-
-        $content = $this->fileManager->parseTemplate(__DIR__ . "/../Templates/Nginx/nginxServer{$ssl}BlockTemplate.php",
-            $config);
+        ]);
         $this->fileManager->createFileContent("nginx/sites-enabled/{$domain}.conf", $content);
 
-        $content = $this->fileManager->parseTemplate(__DIR__ . "/../Templates/Nginx/nginxProxyServer{$ssl}BlockTemplate.php",
-            $config);
+        $content = $this->twig->render("server/nginx/proxyServer{$ssl}Block.html.twig", [
+            'domain' => $domain,
+            'publicDir' => Config::get('publicDirectory')
+        ]);
         $this->fileManager->createFileContent("nginx/proxy/sites-enabled/{$domain}.conf", $content);
     }
 
@@ -57,8 +56,8 @@ class NginxServer extends AbstractServer
      */
     private function createNginxConfFile(): void
     {
-        $content = $this->fileManager->parseTemplate(__DIR__ . '/../Templates/Nginx/nginxConfTemplate.php',
-            Config::get('http'));
+        $content = $this->twig->render('server/nginx/httpBlock.html.twig', ['config' => Config::get('http')]);
+
         $this->fileManager->createFileContent("nginx/nginx.conf", $content);
     }
 
@@ -77,8 +76,8 @@ class NginxServer extends AbstractServer
             'proxy_read_timeout' => '300s'
         ]);
 
-        $content = $this->fileManager->parseTemplate(__DIR__ . '/../Templates/Nginx/nginxConfTemplate.php',
-            $config);
+        $content = $this->twig->render('server/nginx/httpBlock.html.twig', ['config' => $config]);
+        
         $this->fileManager->createFileContent("nginx/proxy/nginx.conf", $content);
     }
 }

@@ -1,0 +1,24 @@
+{% apply spaceless %}
+{% for key, value in config %}
+{% if value is not iterable %}
+{{ key }} {{ value }};
+{% endif %}
+{% endfor %}
+
+events {
+{% for key, value in config.events %}
+{% set value = value is iterable ? value|join(' ') : value %}
+    {{ key }} {{ value }};
+{% endfor %}
+}
+
+http {
+{% for key, value in config.http %}
+{% set value = value is iterable ? value|join(' ') : value %}
+    {{ key }} {{ value }};
+{% endfor %}
+{% for value in config.includes %}
+    include {{ value }};
+{% endfor %}
+}
+{% endapply %}

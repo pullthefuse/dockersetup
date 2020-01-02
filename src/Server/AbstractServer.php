@@ -3,6 +3,7 @@
 namespace App\Server;
 
 use App\FileManager;
+use Twig\Environment;
 
 abstract class AbstractServer implements ServerInterface
 {
@@ -10,6 +11,11 @@ abstract class AbstractServer implements ServerInterface
      * @var FileManager
      */
     protected FileManager $fileManager;
+
+    /**
+     * @var Environment
+     */
+    protected $twig;
 
     /**
      * @var bool
@@ -20,10 +26,12 @@ abstract class AbstractServer implements ServerInterface
      * AbstractServer constructor.
      *
      * @param FileManager $fileManager
+     * @param Environment $twig
      */
-    public function __construct(FileManager $fileManager)
+    public function __construct(FileManager $fileManager, Environment $twig)
     {
         $this->fileManager = $fileManager;
+        $this->twig = $twig;
     }
 
     /**

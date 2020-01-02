@@ -95,6 +95,24 @@ class DockerCompose implements DockerComposeInterface
     /**
      * @inheritDoc
      */
+    public function isSetupComplete(): bool
+    {
+        return $this->fileManager->exists("docker/config/proxy.yaml");
+    }
+
+    /**
+     * Setup creates the proxy config.
+     *
+     * @param ConsoleStyle $io
+     */
+    public function setup(ConsoleStyle $io): void
+    {
+        $this->create('proxy', $io);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function delete(string $domain): void
     {
         $this->fileManager->addToTrash(Config::get('rootDirectory').'/docker/config/'.$domain.'.yaml');

@@ -99,9 +99,9 @@ class SetupCommand extends Command
     {
         $this->io->clearScreen();
 
-        if (!$this->server->isSetupComplete()) {
+        if (!$this->server->isSetupComplete() && !$this->dockerCompose->isSetupComplete()) {
             $this->server->setup();
-            $this->dockerCompose->create('proxy', $this->io);
+            $this->dockerCompose->setup($this->io);
         }
 
         $domain = $this->getDomain($input);
@@ -168,6 +168,10 @@ class SetupCommand extends Command
         }
 
         $rootDirectory = Config::get('rootDirectory');
+
+        if ($domain === 'proxy') {
+            throw new DockerSetupException('Proxy cannot be set as a domain. Aborting...');
+        }
 
         if ($this->fileManager->exists("{$rootDirectory}/docker/config/{$domain}.yaml")) {
             throw new DockerSetupException('Domain already exists. Aborting...');
