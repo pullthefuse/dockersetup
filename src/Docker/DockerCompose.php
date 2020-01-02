@@ -5,6 +5,7 @@ namespace App\Docker;
 use App\Config;
 use App\ConsoleStyle;
 use App\FileManager;
+use Twig\Environment;
 
 class DockerCompose implements DockerComposeInterface
 {
@@ -19,13 +20,20 @@ class DockerCompose implements DockerComposeInterface
     private array $settings = [];
 
     /**
+     * @var Environment
+     */
+    private Environment $twig;
+
+    /**
      * DockerCompose constructor.
      *
      * @param FileManager $fileManager
+     * @param Environment $twig
      */
-    public function __construct(FileManager $fileManager)
+    public function __construct(FileManager $fileManager, Environment $twig)
     {
         $this->fileManager = $fileManager;
+        $this->twig = $twig;
     }
 
     /**
@@ -39,35 +47,48 @@ class DockerCompose implements DockerComposeInterface
         $this->settings['phpVersion'] = $io->choice('What PHP version do you wish to install?', array_keys($phpVersions), '7.4');
 
         $databases = Config::get('docker.services.db');
-        $this->settings['database'] = $io->choice('What database do you wish to use', array_merge(array_keys($databases), ['None']));
+        $this->settings['database'] = $io->choice('What database do you wish to use', array_merge(array_keys($databases), ['None']), 'mysql');
 
         if ($this->settings['database'] !== 'None') {
             $databaseVersions = Config::get('docker.services.db.'.$this->settings['database']);
-            $this->settings['databaseVersion'] = $io->choice('What database version are you using?', array_keys($databaseVersions));
+            $this->settings['databaseVersion'] = $io->choice('What database version are you using?', array_keys($databaseVersions), '8.0');
         }
     }
 
     /**
      * @inheritDoc
      */
-    public function create(string $domain, ConsoleStyle $io, bool $ssl): void
+    public function create(string $domain, ConsoleStyle $io, bool $ssl = false): void
     {
-        $this->interact($io);
-
         $config = array_merge(Config::all(), [
             'domain' => $domain,
             'ssl' => $ssl,
-            'database' => [
-                'version' => $this->settings['databaseVersion'] ?? null,
-                'type' => $this->settings['database']
-            ],
-            'php' => [
-                'version' => $this->settings['phpVersion']
+            'services' => [
+                'nginx' => 'docker/nginxBlock.html.twig'
             ]
         ]);
 
-        $content = $this->fileManager->parseTemplate(__DIR__.'/../Templates/DockerCompose/dockerComposeTemplate.php', $config);
+        if ($domain !== 'proxy') {
+            $this->interact($io);
 
+            if (isset($this->settings['database'])) {
+                $db = $config['docker']['services']['db'][$this->settings['database']][$this->settings['databaseVersion']];
+                $config['db'] = array_merge([
+                    'version' => $this->settings['databaseVersion'] ?? null,
+                    'type' => $this->settings['database']
+                ], $db);
+
+                $config['services']['db'] = 'docker/databaseBlock.html.twig';
+            }
+
+            $config['php'] = [
+                'version' => $this->settings['phpVersion']
+            ];
+
+            $config['services']['web'] = 'docker/webBlock.html.twig';
+        }
+
+        $content = $this->twig->render('docker/base.html.twig', $config);
         $this->fileManager->createFileContent("docker/config/{$domain}.yaml", $content);
     }
 

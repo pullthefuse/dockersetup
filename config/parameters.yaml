@@ -31,7 +31,7 @@ parameters:
           '7.2':
             image: jamescastro/php:7.3-fpm-alpine3.10-dev
         environment:
-          - XDEBUG_CONFIG: remote_host=192.168.1.216
+          XDEBUG_CONFIG: remote_host=192.168.1.216
   http:
     user: 'www-data'
     worker_processes: 1

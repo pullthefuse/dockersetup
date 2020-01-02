@@ -1,0 +1,16 @@
+    db_{{ db.type }}:
+        image: {{ db.image }}
+        container_name: db_{{ db.type }}
+        {{ db.command is defined ? 'command: ' ~ db.command : '' }}
+        ports:
+            - {{ db.port }}:{{ db.port }}
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_HOST: db
+            MYSQL_DATABASE: test
+            MYSQL_USER: user
+            MYSQL_PASSWORD: root
+        volumes:
+            - {{ root_directory }}/{{ db.type }}:/var/lib/{{ db.type }}
+        networks:
+            - {{ docker.network }}

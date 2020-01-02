@@ -21,7 +21,6 @@ class NginxServer extends AbstractServer
     {
         $this->createNginxConfFile();
         $this->createProxyConfFile();
-        $this->createDockerProxyFile();
 
         return $this;
     }
@@ -81,21 +80,5 @@ class NginxServer extends AbstractServer
         $content = $this->fileManager->parseTemplate(__DIR__ . '/../Templates/Nginx/nginxConfTemplate.php',
             $config);
         $this->fileManager->createFileContent("nginx/proxy/nginx.conf", $content);
-    }
-
-    /**
-     * Create the Docker proxy file.
-     */
-    private function createDockerProxyFile(): void
-    {
-        $config = [
-            'root_directory' => Config::get('rootDirectory'),
-            'docker_version' => Config::get('docker.version'),
-            'network' => Config::get('docker.network')
-        ];
-
-        $content = $this->fileManager->parseTemplate(__DIR__ . '/../Templates/DockerCompose/dockerComposeProxyTemplate.php',
-            $config);
-        $this->fileManager->createFileContent("docker/config/proxy.yaml", $content);
     }
 }

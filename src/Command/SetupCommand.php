@@ -101,6 +101,7 @@ class SetupCommand extends Command
 
         if (!$this->server->isSetupComplete()) {
             $this->server->setup();
+            $this->dockerCompose->create('proxy', $this->io);
         }
 
         $domain = $this->getDomain($input);
@@ -118,7 +119,7 @@ class SetupCommand extends Command
         $this->dockerCompose->create($domain, $this->io, $ssl);
 
         $input->setArgument('projectName', $domain);
-        $question = new ChoiceQuestion('Create a new project?', array_merge(array_keys(Project::getList()), ['None']));
+        $question = new ChoiceQuestion('Create a new project?', array_merge(array_keys(Project::getList()), ['None']), 'None');
         $answer = $this->io->askQuestion($question);
 
         if ($answer !== 'None') {

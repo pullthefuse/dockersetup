@@ -13,7 +13,7 @@ interface DockerComposeInterface
      * @param ConsoleStyle $io
      * @param bool $ssl
      */
-    public function create(string $domain, ConsoleStyle $io, bool $ssl): void;
+    public function create(string $domain, ConsoleStyle $io, bool $ssl = false): void;
 
     /**
      * Delete Docker-compose file.
