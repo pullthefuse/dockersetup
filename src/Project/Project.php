@@ -80,10 +80,10 @@ abstract class Project implements ProjectInterface
      */
     public function create(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
-        $this->validate(Config::get('codeDirectory').'/'.$input->getArgument('projectName'));
+        $this->validate(Config::get('codeDirectory').'/'.$input->getArgument('domain'));
         $this->configure();
         $this->addProcessArgument($this->projectArgument);
-        $this->addProcessArgument(Config::get('codeDirectory').'/'.$input->getArgument('projectName'));
+        $this->addProcessArgument(Config::get('codeDirectory').'/'.$input->getArgument('domain'));
 
         $process = new Process($this->processArguments);
 

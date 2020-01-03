@@ -23,7 +23,7 @@ class ServerFileTest extends AbstractTestCase
     /** @test */
     public function create_nginx_server_block_for_non_ssl_only()
     {
-        $this->runApp(['url' => 'dev.example.com'], ['no', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['no', '0', '0', 0, 'None']);
 
         $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlock.php', '/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
     }
@@ -31,7 +31,7 @@ class ServerFileTest extends AbstractTestCase
     /** @test */
     public function create_nginx_server_block_for_ssl()
     {
-        $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
         $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlockWithSSL.php', '/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
     }

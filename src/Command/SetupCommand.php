@@ -79,8 +79,7 @@ class SetupCommand extends Command
         $this
             ->setName('docker:setup')
             ->setDescription('creates your docker environment')
-            ->addArgument('url', InputArgument::OPTIONAL)
-            ->addArgument('projectName', InputArgument::OPTIONAL)
+            ->addArgument('domain', InputArgument::OPTIONAL)
             ->setHelp('More to come!');
     }
 
@@ -118,7 +117,6 @@ class SetupCommand extends Command
 
         $this->dockerCompose->create($domain, $this->io, $ssl);
 
-        $input->setArgument('projectName', $domain);
         $question = new ChoiceQuestion('Create a new project?', array_merge(array_keys(Project::getList()), ['None']), 'None');
         $answer = $this->io->askQuestion($question);
 
@@ -159,7 +157,7 @@ class SetupCommand extends Command
      */
     private function getDomain(InputInterface $input): string
     {
-        if (null === $domain = $input->getArgument('url')) {
+        if (null === $domain = $input->getArgument('domain')) {
             $question = new Question('What is your domain?');
 
             if (null === $domain = $this->io->askQuestion($question)) {

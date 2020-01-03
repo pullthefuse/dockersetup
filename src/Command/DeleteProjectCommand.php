@@ -48,7 +48,7 @@ class DeleteProjectCommand extends Command
     {
         $this
             ->setDescription('creates a project')
-            ->addArgument('projectName', InputArgument::REQUIRED)
+            ->addArgument('domain', InputArgument::REQUIRED)
             ->setHelp('Delete a project');
     }
 
@@ -67,7 +67,7 @@ class DeleteProjectCommand extends Command
     {
         $deleteProjectFiles = $this->io->confirm('Do you want to delete project files?');
 
-        $this->dispatcher->dispatch(new DeleteProjectEvent($input->getArgument('projectName'), $deleteProjectFiles), DeleteProjectEvent::NAME);
+        $this->dispatcher->dispatch(new DeleteProjectEvent($input->getArgument('domain'), $deleteProjectFiles), DeleteProjectEvent::NAME);
 
         return 0;
     }

@@ -47,7 +47,7 @@ class SSLUpdateCommand extends Command
     {
         $this
             ->setDescription('Renew an SSL certificate')
-            ->addArgument('url', InputArgument::REQUIRED)
+            ->addArgument('domain', InputArgument::REQUIRED)
             ->setHelp('Renew a domains ssl certificates');
     }
 
@@ -64,7 +64,7 @@ class SSLUpdateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->ssl->update($this->io, $input->getArgument('url'));
+        $this->ssl->update($this->io, $input->getArgument('domain'));
 
         return 0;
     }

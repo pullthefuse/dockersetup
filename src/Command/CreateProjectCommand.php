@@ -29,7 +29,7 @@ class CreateProjectCommand extends Command
     {
         $this
             ->setDescription('creates a project')
-            ->addArgument('projectName', InputArgument::REQUIRED)
+            ->addArgument('domain', InputArgument::REQUIRED)
             ->setHelp('Create a new project');
     }
 

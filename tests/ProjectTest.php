@@ -11,7 +11,7 @@ class ProjectTest extends AbstractTestCase
 
     public function create_a_new_symfony_skeleton_project()
     {
-        $output = $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
         $this->assertContains('Creating Symfony Project...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
@@ -19,7 +19,7 @@ class ProjectTest extends AbstractTestCase
 
     public function create_a_new_symfony_website_project()
     {
-        $output = $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '1']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '1']);
 
         $this->assertContains('Creating Symfony Project...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
@@ -27,7 +27,7 @@ class ProjectTest extends AbstractTestCase
 
     public function create_a_new_laravel_website_project()
     {
-        $output = $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '2']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '2']);
 
         $this->assertContains('Creating Laravel Project...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
@@ -51,20 +51,20 @@ class ProjectTest extends AbstractTestCase
     /** @test */
     public function check_if_folder_is_empty_before_trying_to_install_a_project()
     {
-        $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
         $this->expectException('App\Exception\DockerSetupException');
 
-        $output = $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
         $this->assertContains('Project already exists. Aborting...', $output);
     }
 
     /** @test */
     public function delete_project()
     {
-        $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
-        $this->runApp(['projectName' => 'dev.example.com'], ['yes'], 'docker:project:delete');
+        $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
 
         $hostFileContent = file_get_contents('/data/test/docker-setup/etc/hosts');
         $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
@@ -80,16 +80,16 @@ class ProjectTest extends AbstractTestCase
     public function show_error_when_deleting_project_that_doesnt_exist()
     {
         $this->expectException('App\Exception\DockerSetupException');
-        $output = $this->runApp(['projectName' => 'dev.example.com'], ['yes'], 'docker:project:delete');
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
         $this->assertContains('There are no files to delete...', $output);
     }
 
     /** @test */
     public function delete_project_but_dont_delete_project_files()
     {
-        $this->runApp(['url' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
-        $this->runApp(['projectName' => 'dev.example.com'], ['no'], 'docker:project:delete');
+        $this->runApp(['domain' => 'dev.example.com'], ['no'], 'docker:project:delete');
 
         $hostFileContent = file_get_contents('/data/test/docker-setup/etc/hosts');
         $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
