@@ -23,6 +23,9 @@ class DeleteProjectCommand extends Command
      */
     protected EventDispatcherInterface $dispatcher;
 
+    /**
+     * @var ConsoleStyle
+     */
     protected ConsoleStyle $io;
 
     /**

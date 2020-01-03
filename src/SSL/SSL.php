@@ -3,6 +3,7 @@
 namespace App\SSL;
 
 use App\Config;
+use App\Exception\DockerSetupException;
 use App\FileManager;
 use App\Server\ServerInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -33,11 +34,7 @@ class SSL implements SSLInterface
     }
 
     /**
-     * Confirm whether SSL needs to be setup and run in.
-     *
-     * @param StyleInterface $io
-     * @param string $domain
-     * @return bool
+     * @inheritDoc
      */
     public function setup(StyleInterface $io, string $domain): bool
     {
@@ -54,9 +51,24 @@ class SSL implements SSLInterface
     }
 
     /**
-     * Delete the certificates for a domain.
-     *
-     * @param $domain
+     * @inheritDoc
+     */
+    public function update(StyleInterface $io, string $domain): void
+    {
+        $rootDirectory = Config::get('rootDirectory');
+
+        if (!$this->fileManager->exists("{$rootDirectory}/docker/config/{$domain}.yaml")) {
+            throw new DockerSetupException('Domain doesn\'t exist. Aborting...');
+        }
+
+        $io->text('Deleting old SSL certificates...');
+        $this->delete($domain);
+        $io->text('Renewing SSL certificates...');
+        $this->createCertificates($domain);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function delete($domain): void
     {
