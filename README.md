@@ -7,12 +7,12 @@ Create all the files you need to run your applications from docker files in your
 Run the following command to auto run the domain setup. Follow the instructions to setup your hosts file and up your docker-compose files when its finished.
 
 ```
-docker run -it --rm -v /{YOUR_DIRECTORY}:/data jamescastro/dockersetup:latest
+docker run -it --rm -v /{YOUR_DIRECTORY}:/data pullthefuse/dockersetup:latest
 ```
 
 The following command will run the container and open bash which will allow you to setup, delete and use various other commands.
 ```
-docker run -it --rm -v /{YOUR_DIRECTORY}:/data jamescastro/dockersetup:latest /bin/bash
+docker run -it --rm -v /{YOUR_DIRECTORY}:/data pullthefuse/dockersetup:latest /bin/bash
 ```
 Use ```bin/console docker``` to see the available commands. To setup a domain from here run ```bin/console docker:setup yourdomain.com```
 
