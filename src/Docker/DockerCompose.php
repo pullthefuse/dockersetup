@@ -3,8 +3,8 @@
 namespace App\Docker;
 
 use App\Config;
-use App\ConsoleStyle;
 use App\FileManager;
+use Symfony\Component\Console\Style\StyleInterface;
 use Twig\Environment;
 
 class DockerCompose implements DockerComposeInterface
@@ -39,9 +39,9 @@ class DockerCompose implements DockerComposeInterface
     /**
      * Select the containers that need to be loaded.
      *
-     * @param ConsoleStyle $io
+     * @param StyleInterface $io
      */
-    public function interact(ConsoleStyle $io)
+    public function interact(StyleInterface $io)
     {
         $phpVersions = Config::get('docker.services.web.php');
         $this->settings['phpVersion'] = $io->choice('What PHP version do you wish to install?', array_keys($phpVersions), '7.4');
@@ -58,7 +58,7 @@ class DockerCompose implements DockerComposeInterface
     /**
      * @inheritDoc
      */
-    public function create(string $domain, ConsoleStyle $io, bool $ssl = false): void
+    public function create(string $domain, StyleInterface $io, bool $ssl = false): void
     {
         $config = array_merge(Config::all(), [
             'domain' => $domain,
@@ -103,9 +103,9 @@ class DockerCompose implements DockerComposeInterface
     /**
      * Setup creates the proxy config.
      *
-     * @param ConsoleStyle $io
+     * @param StyleInterface $io
      */
-    public function setup(ConsoleStyle $io): void
+    public function setup(StyleInterface $io): void
     {
         $this->create('proxy', $io);
     }

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DeleteProjectCommand extends Command
@@ -21,12 +22,12 @@ class DeleteProjectCommand extends Command
     /**
      * @var EventDispatcherInterface
      */
-    protected EventDispatcherInterface $dispatcher;
+    private EventDispatcherInterface $dispatcher;
 
     /**
-     * @var ConsoleStyle
+     * @var StyleInterface
      */
-    protected ConsoleStyle $io;
+    private StyleInterface $io;
 
     /**
      * DeleteProjectCommand constructor.

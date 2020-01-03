@@ -3,11 +3,11 @@
 namespace App\Project;
 
 use App\Config;
-use App\ConsoleStyle;
 use App\Exception\DockerSetupException;
 use App\FileManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Process\Process;
 
 abstract class Project implements ProjectInterface
@@ -78,7 +78,7 @@ abstract class Project implements ProjectInterface
     /**
      * @inheritDoc
      */
-    public function create(InputInterface $input, ConsoleStyle $io, Command $command): void
+    public function create(InputInterface $input, StyleInterface $io, Command $command): void
     {
         $this->validate(Config::get('codeDirectory').'/'.$input->getArgument('domain'));
         $this->configure();

@@ -2,7 +2,7 @@
 
 namespace App\Docker;
 
-use App\ConsoleStyle;
+use Symfony\Component\Console\Style\StyleInterface;
 
 interface DockerComposeInterface
 {
@@ -10,10 +10,10 @@ interface DockerComposeInterface
      * Create the docker-compose file.
      *
      * @param string $domain
-     * @param ConsoleStyle $io
+     * @param StyleInterface $io
      * @param bool $ssl
      */
-    public function create(string $domain, ConsoleStyle $io, bool $ssl = false): void;
+    public function create(string $domain, StyleInterface $io, bool $ssl = false): void;
 
     /**
      * Delete Docker-compose file.
@@ -30,7 +30,7 @@ interface DockerComposeInterface
     public function isSetupComplete(): bool;
 
     /**
-     * @param ConsoleStyle $io
+     * @param StyleInterface $io
      */
-    public function setup(ConsoleStyle $io): void;
+    public function setup(StyleInterface $io): void;
 }

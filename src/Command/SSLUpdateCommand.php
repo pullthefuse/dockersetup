@@ -20,12 +20,12 @@ class SSLUpdateCommand extends Command
     /**
      * @var SSLInterface
      */
-    protected SSLInterface $ssl;
+    private SSLInterface $ssl;
 
     /**
      * @var StyleInterface
      */
-    protected StyleInterface $io;
+    private StyleInterface $io;
 
     /**
      * SSLRenewCommand constructor.

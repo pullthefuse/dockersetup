@@ -2,9 +2,9 @@
 
 namespace App\Project;
 
-use App\ConsoleStyle;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 
 interface ProjectInterface
 {
@@ -27,11 +27,11 @@ interface ProjectInterface
      * Creates the project.
      *
      * @param InputInterface $input
-     * @param ConsoleStyle $io
+     * @param StyleInterface $io
      * @param Command $command
      * @return mixed
      */
-    public function create(InputInterface $input, ConsoleStyle $io, Command $command);
+    public function create(InputInterface $input, StyleInterface $io, Command $command);
 
     /**
      * Configure the project.
