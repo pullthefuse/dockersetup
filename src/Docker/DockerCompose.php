@@ -51,6 +51,7 @@ class DockerCompose implements DockerComposeInterface
 
         if ($this->settings['database'] !== 'None') {
             $databaseVersions = Config::get('docker.services.db.'.$this->settings['database']);
+            unset($databaseVersions['_default']);
             $this->settings['databaseVersion'] = $io->choice('What database version are you using?', array_keys($databaseVersions), '8.0');
         }
     }
@@ -75,7 +76,9 @@ class DockerCompose implements DockerComposeInterface
                 $db = $config['docker']['services']['db'][$this->settings['database']][$this->settings['databaseVersion']];
                 $config['db'] = array_merge([
                     'version' => $this->settings['databaseVersion'] ?? null,
-                    'type' => $this->settings['database']
+                    'type' => $this->settings['database'],
+                    'port' => $config['docker']['services']['db'][$this->settings['database']]['_default']['port'],
+                    'environment' => $config['docker']['services']['db'][$this->settings['database']]['_default']['environment']
                 ], $db);
 
                 $config['services']['db'] = 'docker/databaseBlock.html.twig';

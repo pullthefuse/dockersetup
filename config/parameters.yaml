@@ -14,14 +14,29 @@ parameters:
         mysql:
           '8.0':
             image: mysql:8.0
-            port: 3306
             command: --default-authentication-plugin=mysql_native_password
           '5.7':
             image: mysql:5.7
-            port: 3306
           '5.6':
             image: mysql:5.6
+          _default:
             port: 3306
+            environment:
+              MYSQL_ROOT_PASSWORD: root
+              MYSQL_USER: user
+              MYSQL_PASSWORD: root
+        postgres:
+          12:
+            image: postgres:12
+          11:
+            image: postgres:11
+          10:
+            image: postgres:10
+          _default:
+            port: 5432
+            environment:
+              POSTGRES_USER: user
+              POSTGRES_PASSWORD: root
       web:
         php:
           '7.4':
