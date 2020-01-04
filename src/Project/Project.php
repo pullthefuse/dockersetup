@@ -7,6 +7,7 @@ use App\Exception\DockerSetupException;
 use App\FileManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Process\Process;
 
@@ -78,7 +79,7 @@ abstract class Project implements ProjectInterface
     /**
      * @inheritDoc
      */
-    public function create(InputInterface $input, StyleInterface $io, Command $command): void
+    public function create(InputInterface $input, OutputInterface $output, StyleInterface $io, Command $command): void
     {
         $this->validate(Config::get('codeDirectory').'/'.$input->getArgument('domain'));
         $this->configure();
@@ -90,7 +91,7 @@ abstract class Project implements ProjectInterface
         $process->setTimeout($this->timeOut);
 
         $helper = $command->getApplication()->getHelperSet()->get('process');
-        $helper->run($io, $process, null, function ($type, $buffer) use ($io) {
+        $helper->run($output, $process, null, function ($type, $buffer) use ($io) {
             if (Process::ERR === $type) {
                 if ($buffer != '') {
                     $io->formatBuffer($buffer);

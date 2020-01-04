@@ -13,7 +13,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
-        $this->assertContains('Creating Symfony Project...', $output);
+        $this->assertContains('A Symfony project has been successfully created...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
     }
 
@@ -21,7 +21,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '1']);
 
-        $this->assertContains('Creating Symfony Project...', $output);
+        $this->assertContains('A Symfony project has been successfully created...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
     }
 
@@ -29,7 +29,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '2']);
 
-        $this->assertContains('Creating Laravel Project...', $output);
+        $this->assertContains('A Laravel project has been successfully created...', $output);
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
     }
 

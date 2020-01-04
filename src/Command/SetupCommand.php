@@ -123,7 +123,7 @@ class SetupCommand extends Command
 
         if ($answer !== 'None') {
             $project = Project::newProject($answer);
-            $project->create($input, $this->io, $this);
+            $project->create($input, $output, $this->io, $this);
         }
 
         $rootDirectory = Config::get('rootDirectory');
@@ -175,6 +175,8 @@ class SetupCommand extends Command
         if ($this->fileManager->exists("{$rootDirectory}/docker/config/{$domain}.yaml")) {
             throw new DockerSetupException('Domain already exists. Aborting...');
         }
+
+        $input->setArgument('domain', $domain);
 
         return $domain;
     }

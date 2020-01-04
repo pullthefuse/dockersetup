@@ -4,6 +4,7 @@ namespace App\Project;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 
 interface ProjectInterface
@@ -27,11 +28,12 @@ interface ProjectInterface
      * Creates the project.
      *
      * @param InputInterface $input
+     * @param OutputInterface $output
      * @param StyleInterface $io
      * @param Command $command
      * @return mixed
      */
-    public function create(InputInterface $input, StyleInterface $io, Command $command);
+    public function create(InputInterface $input, OutputInterface $output, StyleInterface $io, Command $command);
 
     /**
      * Configure the project.

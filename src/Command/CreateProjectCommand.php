@@ -50,7 +50,7 @@ class CreateProjectCommand extends Command
         $question = new ChoiceQuestion('Create a new project?', array_keys(Project::getList()));
         $project = Project::newProject($this->io->askQuestion($question));
 
-        $project->create($input, $this->io, $this);
+        $project->create($input, $output, $this->io, $this);
 
         return 0;
     }
