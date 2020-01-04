@@ -36,7 +36,7 @@ class SSL implements SSLInterface
     /**
      * @inheritDoc
      */
-    public function setup(StyleInterface $io, string $domain): bool
+    public function create(StyleInterface $io, string $domain): bool
     {
         $sslQuestion = new ConfirmationQuestion('Do you want to set up SSL?');
 

@@ -108,7 +108,7 @@ class SetupCommand extends Command
 
         $this->hostFile->addToHostFile($domain);
 
-        $ssl = $this->ssl->setup($this->io, $domain);
+        $ssl = $this->ssl->create($this->io, $domain);
 
         $this->io->text('Creating server files...');
 

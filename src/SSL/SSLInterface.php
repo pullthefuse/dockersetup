@@ -13,7 +13,7 @@ interface SSLInterface
      * @param string $domain
      * @return bool
      */
-    public function setup(StyleInterface $io, string $domain): bool;
+    public function create(StyleInterface $io, string $domain): bool;
 
     /**
      * Updates a domains certificates
