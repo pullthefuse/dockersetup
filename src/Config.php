@@ -17,7 +17,10 @@ class Config
      */
     public static function setup(): void
     {
-        self::$params = Yaml::parseFile(__DIR__.'/../config/'.(getenv('CONFIG_PATH') ?? '').'parameters.yaml')['parameters'];
+        $params = Yaml::parseFile(__DIR__.'/../config/'.(getenv('CONFIG_PATH') ?? '').'parameters.yaml')['parameters'];
+        $parameterBag = new ParameterBag($params);
+        $parameterBag->resolve();
+        self::$params = $parameterBag->all();
     }
 
     /**

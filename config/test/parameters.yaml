@@ -1,9 +1,9 @@
 parameters:
-  root_directory: '/data/test/docker-setup'
-  code_directory: '/data/test/docker-setup/code'
+  root_directory: '%env(DIR)%'
+  code_directory: '%env(DIR)%/code'
   public_directory: '/public'
   host_ip_address: '127.0.0.1'
-  host_file: '/data/test/docker-setup/etc/hosts'
+  host_file: '%env(DIR)%/etc/hosts'
   docker:
     version: 3
     network: general
