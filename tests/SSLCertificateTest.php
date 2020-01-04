@@ -35,4 +35,16 @@ class SSLCertificateTest extends AbstractTestCase
 
         $this->assertContains('Domain doesn\'t exist', $output);
     }
+
+    /** @test */
+    public function view_domain_certificates_expiry_date()
+    {
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example2.com'], ['yes', '0', '0', 0, 'None']);
+
+        $output = $this->runApp([], [], 'docker:ssl:status');
+
+        $this->assertContains('dev.example.com - Certificate Expires:', $output);
+        $this->assertContains('dev.example2.com - Certificate Expires:', $output);
+    }
 }

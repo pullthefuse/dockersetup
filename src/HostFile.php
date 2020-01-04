@@ -110,11 +110,10 @@ class HostFile
     protected function updateBlock($data, $contents): bool
     {
         $pattern = '/'.preg_quote($this->blockStart, '/').'.*?'.preg_quote($this->blockEnd, '/').'/s';
-        $pattern2 = '/'.preg_quote($this->blockStart, '/').'(.+)'.preg_quote($this->blockEnd, '/').'/s';
 
-        preg_match($pattern2, $contents, $matches);
+        $domains = $this->getDomains();
 
-        $data = trim($matches[1])."\n".$data;
+        $data = trim($domains)."\n".$data;
 
         $data = $this->buildBlock($data);
 
@@ -122,6 +121,17 @@ class HostFile
         $this->fileManager->dumpFile(Config::get('hostFile'), $newContents);
 
         return true;
+    }
+
+    public function getDomains()
+    {
+        $contents = $this->fileManager->getFileContents(Config::get('hostFile'));
+
+        $pattern2 = '/'.preg_quote($this->blockStart, '/').'(.+)'.preg_quote($this->blockEnd, '/').'/s';
+
+        preg_match($pattern2, $contents, $matches);
+
+        return $matches[1] ?? [];
     }
 
     /**

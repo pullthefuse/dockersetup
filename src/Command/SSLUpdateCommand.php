@@ -43,12 +43,12 @@ class SSLUpdateCommand extends Command
     /**
      * @inheritDoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
-            ->setDescription('Renew an SSL certificate')
+            ->setDescription('update SSL certificate')
             ->addArgument('domain', InputArgument::REQUIRED)
-            ->setHelp('Renew a domains ssl certificates');
+            ->setHelp('Update a domains ssl certificates');
     }
 
     /**
@@ -62,7 +62,7 @@ class SSLUpdateCommand extends Command
     /**
      * @inheritDoc
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ssl->update($this->io, $input->getArgument('domain'));
 
