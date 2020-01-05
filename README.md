@@ -25,5 +25,10 @@ You will need to install the docker client and in the preferences set the direct
 Nginx settings - Currently after the files are created you will have to go in and update the settings you wish to change.
 Docker images/settings - You can go to the docker-compose files and change the images or any of the settings before running docker-compose up.
 
+### Multiple Database Versions
+We support multiple database versions. If you use the current version on the initial install it will be on the normal port so 3306 for mysql.
+
+If you use version lower it will drop a port number so mysql will be on port 3305 and so on.
+
 ### Docker Images
 All the Dockerfiles used to create the custom images can be found [here](https://github.com/pullthefuse/docker)
