@@ -29,4 +29,28 @@ class ConfigTest extends AbstractTestCase
 
         $this->assertEquals('', $value);
     }
+
+    /** @test */
+    public function generate_port_mappings_on_setup()
+    {
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', '0', 'None']);
+
+        $this->assertEquals($this->portMappings(), file_get_contents('/data/test/docker-setup/config/default/databaseMappings.json'));
+    }
+
+    private function portMappings()
+    {
+        return json_encode([
+            'mysql' => [
+                '8.0' => '3306:3306',
+                '5.7' => '3305:3306',
+                '5.6' => '3304:3306'
+            ],
+            'postgres' => [
+                '12' => '5432:5432',
+                '11' => '5431:5432',
+                '10' => '5430:5432'
+            ]
+        ]);
+    }
 }

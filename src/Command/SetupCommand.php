@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Config;
 use App\ConsoleStyle;
+use App\Database\Database;
+use App\Database\DatabaseInterface;
 use App\Exception\DockerSetupException;
 use App\HostFile;
 use App\Docker\DockerComposeInterface;
@@ -52,6 +54,11 @@ class SetupCommand extends Command
     private SSLInterface $ssl;
 
     /**
+     * @var DatabaseInterface
+     */
+    private $database;
+
+    /**
      * SetupCommand constructor.
      *
      * @param SSLInterface $ssl
@@ -59,15 +66,17 @@ class SetupCommand extends Command
      * @param DockerComposeInterface $dockerCompose
      * @param ServerInterface $server
      * @param FileManager $fileManager
+     * @param DatabaseInterface $database
      * @param string|null $name
      */
-    public function __construct(SSLInterface $ssl, HostFile $hostFile, DockerComposeInterface $dockerCompose, ServerInterface $server, FileManager $fileManager, string $name = null)
+    public function __construct(SSLInterface $ssl, HostFile $hostFile, DatabaseInterface $database, DockerComposeInterface $dockerCompose, ServerInterface $server, FileManager $fileManager, string $name = null)
     {
         $this->dockerCompose = $dockerCompose;
         $this->fileManager = $fileManager;
         $this->server = $server;
         $this->ssl = $ssl;
         $this->hostFile = $hostFile;
+        $this->database = $database;
 
         parent::__construct($name);
     }
@@ -102,6 +111,7 @@ class SetupCommand extends Command
         if (!$this->server->isSetupComplete() && !$this->dockerCompose->isSetupComplete()) {
             $this->server->setup();
             $this->dockerCompose->setup($this->io);
+            $this->database->setup();
         }
 
         $domain = $this->getDomain($input);

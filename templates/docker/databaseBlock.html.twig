@@ -3,7 +3,7 @@
         container_name: db_{{ db.type }}
         {{ db.command is defined ? 'command: ' ~ db.command : '' }}
         ports:
-            - {{ db.port }}:{{ db.port }}
+            - {{ db.port }}
         environment:
 {% for key, value in db.environment %}
             {{ key }}: {{ value }}

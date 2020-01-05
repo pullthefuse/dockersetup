@@ -73,11 +73,14 @@ class DockerCompose implements DockerComposeInterface
             $this->interact($io);
 
             if (isset($this->settings['database'])) {
+                $rootDirectory = Config::get('rootDirectory');
+                $portMappings = json_decode($this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"), JSON_OBJECT_AS_ARRAY);
                 $db = $config['docker']['services']['db'][$this->settings['database']][$this->settings['databaseVersion']];
+
                 $config['db'] = array_merge([
                     'version' => $this->settings['databaseVersion'] ?? null,
                     'type' => $this->settings['database'],
-                    'port' => $config['docker']['services']['db'][$this->settings['database']]['_default']['port'],
+                    'port' => $portMappings[$this->settings['database']][$this->settings['databaseVersion']],
                     'environment' => $config['docker']['services']['db'][$this->settings['database']]['_default']['environment']
                 ], $db);
 
