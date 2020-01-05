@@ -24,3 +24,6 @@ You will need to install the docker client and in the preferences set the direct
 ### Customize Settings
 Nginx settings - Currently after the files are created you will have to go in and update the settings you wish to change.
 Docker images/settings - You can go to the docker-compose files and change the images or any of the settings before running docker-compose up.
+
+### Docker Images
+All the Dockerfiles used to create the custom images can be found [here](https://github.com/pullthefuse/docker)
