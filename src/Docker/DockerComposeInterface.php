@@ -30,6 +30,8 @@ interface DockerComposeInterface
     public function isSetupComplete(): bool;
 
     /**
+     * Setup the proxy file.
+     *
      * @param StyleInterface $io
      */
     public function setup(StyleInterface $io): void;

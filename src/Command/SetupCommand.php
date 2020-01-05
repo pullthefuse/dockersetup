@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Config;
 use App\ConsoleStyle;
-use App\Database\Database;
 use App\Database\DatabaseInterface;
 use App\Exception\DockerSetupException;
 use App\HostFile;
