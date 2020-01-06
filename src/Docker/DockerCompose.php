@@ -65,7 +65,7 @@ class DockerCompose implements DockerComposeInterface
             'domain' => $domain,
             'ssl' => $ssl,
             'services' => [
-                'nginx' => 'docker/nginxBlock.html.twig'
+                'nginx' => 'docker/nginxBlock.yaml.twig'
             ]
         ]);
 
@@ -85,17 +85,17 @@ class DockerCompose implements DockerComposeInterface
                     'environment' => $config['docker']['services']['db'][$this->settings['database']]['_default']['environment']
                 ], $db);
 
-                $config['services']['db'] = 'docker/databaseBlock.html.twig';
+                $config['services']['db'] = 'docker/databaseBlock.yaml.twig';
             }
 
             $config['php'] = [
                 'version' => $this->settings['phpVersion']
             ];
 
-            $config['services']['web'] = 'docker/webBlock.html.twig';
+            $config['services']['web'] = 'docker/webBlock.yaml.twig';
         }
 
-        $content = $this->twig->render('docker/base.html.twig', $config);
+        $content = $this->twig->render('docker/base.yaml.twig', $config);
         $this->fileManager->createFileContent("docker/config/{$domain}.yaml", $content);
     }
 

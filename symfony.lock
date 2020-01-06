@@ -178,7 +178,7 @@
         "files": [
             "config/packages/test/twig.yaml",
             "config/packages/twig.yaml",
-            "templates/base.html.twig"
+            "templates/base.yaml.twig"
         ]
     },
     "symfony/twig-pack": {
