@@ -9,6 +9,6 @@
             {{ key }}: {{ value }}
 {% endfor %}
         volumes:
-            - {{ root_directory }}/{{ db.type }}:/var/lib/{{ db.type }}
+            - {{ root_directory }}/{{ db.type }}/{{ db.version|slug }}:/var/lib/{{ db.type }}
         networks:
             - {{ docker.network }}

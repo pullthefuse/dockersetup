@@ -24,7 +24,7 @@ services:
             MYSQL_USER: user
             MYSQL_PASSWORD: root
         volumes:
-            - /data/test/docker-setup/mysql:/var/lib/mysql
+            - /data/test/docker-setup/mysql/8_0:/var/lib/mysql
         networks:
             - general
     web_dev_example_com:
