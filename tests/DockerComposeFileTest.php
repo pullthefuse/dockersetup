@@ -65,7 +65,7 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function check_that_exception_is_thrown_if_proxy_is_used_as_domain_name()
+    public function check_that_exception_is_thrown_if_ds_proxy_or_proxy_is_used_as_domain_name()
     {
         $this->expectException('App\Exception\DockerSetupException');
 

@@ -177,7 +177,7 @@ class SetupCommand extends Command
 
         $rootDirectory = Config::get('rootDirectory');
 
-        if ($domain === 'proxy') {
+        if (false !== strpos($domain, 'proxy')) {
             throw new DockerSetupException('Proxy cannot be set as a domain. Aborting...');
         }
 

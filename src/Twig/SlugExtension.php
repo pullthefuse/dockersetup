@@ -11,7 +11,7 @@ class SlugExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('slug', function ($value) {
+            new TwigFilter('slug', static function ($value) {
                 return Str::slug($value);
             })
         ];

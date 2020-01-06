@@ -49,15 +49,15 @@ class Database implements DatabaseInterface
     {
         $databases = Config::get('docker.services.db');
 
-        array_walk($databases, function(&$database, $key) {
+        array_walk($databases, static function(&$database, $key) {
             $basePort = self::PORTS[$key];
             $versionPort = $basePort + 1;
 
-            $database = array_filter($database, function($key) {
-                return $key != '_default';
+            $database = array_filter($database, static function($key) {
+                return $key !== '_default';
             }, ARRAY_FILTER_USE_KEY);
 
-            $database = array_map(function() use ($basePort, &$versionPort) {
+            $database = array_map(static function() use ($basePort, &$versionPort) {
                 $versionPort--;
 
                 return "{$versionPort}:{$basePort}";

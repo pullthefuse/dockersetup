@@ -1,6 +1,6 @@
-    nginx_{{ domain|slug }}:
+    nginx_{{ domain == 'proxy' ? 'ds_' : '' }}{{ domain|slug }}:
         image: {{ docker.services.nginx.image ?? 'nginx:latest' }}
-        container_name: nginx_{{ domain|slug }}
+        container_name: nginx_{{ domain == 'proxy' ? 'ds_' : '' }}{{ domain|slug }}
 {% if domain == 'proxy' %}
         volumes:
             - {{ root_directory }}/nginx/proxy/sites-enabled:/etc/nginx/sites-enabled

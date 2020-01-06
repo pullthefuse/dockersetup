@@ -1,8 +1,8 @@
 version: "3"
 services:
-    nginx_proxy:
+    nginx_ds_proxy:
         image: nginx:latest
-        container_name: nginx_proxy
+        container_name: nginx_ds_proxy
         volumes:
             - /data/test/docker-setup/nginx/proxy/sites-enabled:/etc/nginx/sites-enabled
             - /data/test/docker-setup/nginx/proxy/nginx.conf:/etc/nginx/nginx.conf

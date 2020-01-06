@@ -55,7 +55,7 @@ class Str
      * @param  string  $separator
      * @return string
      */
-    public static function slug($title, $separator = '_'): string
+    public static function slug(string $title, string $separator = '_'): string
     {
         if (isset(self::$slugCache[$title])) {
             return self::$slugCache[$title];
@@ -63,16 +63,15 @@ class Str
 
         $key = $title;
         // Convert all dashes/underscores into separator
-        $flip = $separator === '-' ? '_' : '-';
-        $title = preg_replace('!['.preg_quote($flip).']+!u', $separator, $title);
+        $flip = $separator === '_' ? '-' : '_';
+        $title = preg_replace('!['.preg_quote($flip, '/').']+!u', $separator, $title);
         // Replace @ with the word 'at'
-        $title = str_replace('@', $separator.'at'.$separator, $title);
         // Replace . with separator
-        $title = str_replace('.', $separator, $title);
+        $title = str_replace(['@', '.'], [$separator . 'at' . $separator, $separator], $title);
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $title = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', static::lower($title));
+        $title = preg_replace('![^'.preg_quote($separator, '/').'\pL\pN\s]+!u', '', static::lower($title));
         // Replace all separator characters and whitespace by a single separator
-        $title = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $title);
+        $title = preg_replace('!['.preg_quote($separator, '/').'\s]+!u', $separator, $title);
 
         return self::$slugCache[$key] = trim($title, $separator);
     }
