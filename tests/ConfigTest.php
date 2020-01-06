@@ -7,7 +7,7 @@ use App\Config;
 class ConfigTest extends AbstractTestCase
 {
     /** @test */
-    public function get_a_parameter_from_the_config_class_using_camel_case()
+    public function get_a_parameter_from_the_config_class_using_camel_case(): void
     {
         $rootDirectory = Config::get('rootDirectory');
 
@@ -15,7 +15,7 @@ class ConfigTest extends AbstractTestCase
     }
 
     /** @test */
-    public function get_a_parameter_from_the_config_class_using_snake_case()
+    public function get_a_parameter_from_the_config_class_using_snake_case(): void
     {
         $rootDirectory = Config::get('root_directory');
 
@@ -23,7 +23,7 @@ class ConfigTest extends AbstractTestCase
     }
 
     /** @test */
-    public function get_empty_string_if_parameter_doesnt_exist()
+    public function get_empty_string_if_parameter_doesnt_exist(): void
     {
         $value = Config::get('testValue');
 
@@ -31,7 +31,7 @@ class ConfigTest extends AbstractTestCase
     }
 
     /** @test */
-    public function generate_port_mappings_on_setup()
+    public function generate_port_mappings_on_setup(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', '0', 'None']);
 
@@ -51,6 +51,6 @@ class ConfigTest extends AbstractTestCase
                 '11' => '5431:5432',
                 '10' => '5430:5432'
             ]
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 }

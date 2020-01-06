@@ -51,14 +51,14 @@ class Config
 
         $values = explode('.', $value);
 
-        $values = array_map(function($value) {
+        $values = array_map(static function($value) {
             return Str::snake($value);
         }, $values);
 
         $data = self::$params;
 
-        foreach ($values as $value) {
-            $data = $data[$value] ?? '';
+        foreach ($values as $val) {
+            $data = $data[$val] ?? '';
         }
 
         return $data;

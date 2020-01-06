@@ -93,7 +93,7 @@ abstract class Project implements ProjectInterface
         $helper = $command->getApplication()->getHelperSet()->get('process');
         $helper->run($output, $process, null, function ($type, $buffer) use ($io) {
             if (Process::ERR === $type) {
-                if ($buffer != '') {
+                if ($buffer !== '') {
                     $io->formatBuffer($buffer);
                 }
             } else {

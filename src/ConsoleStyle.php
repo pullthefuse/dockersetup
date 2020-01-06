@@ -11,7 +11,7 @@ class ConsoleStyle extends SymfonyStyle
      *
      * @param $message
      */
-    public function text($message)
+    public function text($message): void
     {
         $this->block($message);
     }
@@ -21,7 +21,7 @@ class ConsoleStyle extends SymfonyStyle
      *
      * @param $message
      */
-    public function errorText($message)
+    public function errorText($message): void
     {
         $this->block($message, null, 'fg=red;bg=default', '', true);
     }
@@ -31,7 +31,7 @@ class ConsoleStyle extends SymfonyStyle
      *
      * @param $message
      */
-    public function greenText($message)
+    public function greenText($message): void
     {
         $this->block($message, null, 'fg=green;bg=default', '', true);
     }
@@ -41,7 +41,7 @@ class ConsoleStyle extends SymfonyStyle
      *
      * @param $message
      */
-    public function outputText($message)
+    public function outputText($message): void
     {
         $this->block($message, null, 'fg=green;bg=default', '', true);
     }
@@ -49,7 +49,7 @@ class ConsoleStyle extends SymfonyStyle
     /**
      * Clear the console screen.
      */
-    public function clearScreen()
+    public function clearScreen(): void
     {
         $this->write(sprintf("\033\143"));
     }
@@ -75,9 +75,8 @@ class ConsoleStyle extends SymfonyStyle
         foreach (['Installing', 'Configuring'] as $type) {
             $package = "/{$type}(.*?)\(/s";
             $version = '/\((.*?)\)/s';
-            $ok = '/(\[OK\])/s';
 
-            if (preg_match($ok, $buffer, $matches)) {
+            if (preg_match('/(\[OK])/', $buffer, $matches)) {
                 $result = str_replace($matches[1], "<fg=green;bg=default>{$matches[1]}</>", $buffer);
                 break;
             }

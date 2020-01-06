@@ -2,10 +2,12 @@
 
 namespace App\Tests;
 
+use App\Exception\DockerSetupException;
+
 class SSLCertificateTest extends AbstractTestCase
 {
     /** @test */
-    public function createSSLCertificate()
+    public function createSSLCertificate(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
@@ -15,7 +17,7 @@ class SSLCertificateTest extends AbstractTestCase
     }
 
     /** @test */
-    public function updateSSLCertificate()
+    public function updateSSLCertificate(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
         $oldCertificate = file_get_contents('/data/test/docker-setup/tls/dev.example.com.crt');
@@ -28,16 +30,16 @@ class SSLCertificateTest extends AbstractTestCase
     }
 
     /** @test */
-    public function when_updating_throw_docker_setup_exception_if_domain_doesnt_exist()
+    public function when_updating_throw_docker_setup_exception_if_domain_doesnt_exist(): void
     {
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
         $output = $this->runApp(['domain' => 'dev.example.com'], [], 'docker:ssl:update');
 
         $this->assertContains('Domain doesn\'t exist', $output);
     }
 
     /** @test */
-    public function view_domain_certificates_expiry_date()
+    public function view_domain_certificates_expiry_date(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
         $this->runApp(['domain' => 'dev.example2.com'], ['yes', '0', '0', 0, 'None']);

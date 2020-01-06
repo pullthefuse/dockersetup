@@ -18,7 +18,7 @@ class Database implements DatabaseInterface
     /**
      * @var FileManager
      */
-    protected $fileManager;
+    protected FileManager $fileManager;
 
     /**
      * Database constructor.
@@ -64,6 +64,6 @@ class Database implements DatabaseInterface
             }, $database);
         });
 
-        return json_encode($databases);
+        return json_encode($databases, JSON_THROW_ON_ERROR);
     }
 }

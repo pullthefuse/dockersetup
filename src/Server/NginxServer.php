@@ -11,7 +11,7 @@ class NginxServer extends AbstractServer
      */
     public function isSetupComplete(): bool
     {
-        return $this->fileManager->exists("nginx/nginx.conf");
+        return $this->fileManager->exists('nginx/nginx.conf');
     }
 
     /**
@@ -58,7 +58,7 @@ class NginxServer extends AbstractServer
     {
         $content = $this->twig->render('server/nginx/httpBlock.html.twig', ['config' => Config::get('http')]);
 
-        $this->fileManager->createFileContent("nginx/nginx.conf", $content);
+        $this->fileManager->createFileContent('nginx/nginx.conf', $content);
     }
 
     /**
@@ -78,6 +78,6 @@ class NginxServer extends AbstractServer
 
         $content = $this->twig->render('server/nginx/httpBlock.html.twig', ['config' => $config]);
         
-        $this->fileManager->createFileContent("nginx/proxy/nginx.conf", $content);
+        $this->fileManager->createFileContent('nginx/proxy/nginx.conf', $content);
     }
 }

@@ -15,7 +15,7 @@ abstract class AbstractServer implements ServerInterface
     /**
      * @var Environment
      */
-    protected $twig;
+    protected Environment $twig;
 
     /**
      * @var bool

@@ -48,7 +48,7 @@ class FileManager extends Filesystem
      * @param iterable|string $file
      * @return bool
      */
-    public function exists($file)
+    public function exists($file): bool
     {
         if (!$this->isAbsolutePath($file)) {
             $file = Config::get('rootDirectory').'/'.$file;

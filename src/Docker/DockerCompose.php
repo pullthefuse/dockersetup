@@ -41,7 +41,7 @@ class DockerCompose implements DockerComposeInterface
      *
      * @param StyleInterface $io
      */
-    public function interact(StyleInterface $io)
+    public function interact(StyleInterface $io): void
     {
         $phpVersions = Config::get('docker.services.web.php');
         $this->settings['phpVersion'] = $io->choice('What PHP version do you wish to install?', array_keys($phpVersions), '7.4');
@@ -74,7 +74,8 @@ class DockerCompose implements DockerComposeInterface
 
             if (isset($this->settings['database'])) {
                 $rootDirectory = Config::get('rootDirectory');
-                $portMappings = json_decode($this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"), JSON_OBJECT_AS_ARRAY);
+                $portMappings = json_decode($this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"),
+                    JSON_OBJECT_AS_ARRAY, 512, JSON_THROW_ON_ERROR);
                 $db = $config['docker']['services']['db'][$this->settings['database']][$this->settings['databaseVersion']];
 
                 $config['db'] = array_merge([
@@ -103,7 +104,7 @@ class DockerCompose implements DockerComposeInterface
      */
     public function isSetupComplete(): bool
     {
-        return $this->fileManager->exists("docker/config/proxy.yaml");
+        return $this->fileManager->exists('docker/config/proxy.yaml');
     }
 
     /**

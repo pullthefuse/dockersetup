@@ -26,7 +26,7 @@ class CreateProjectCommand extends Command
     /**
      * @inheritDoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('creates a project')
@@ -37,7 +37,7 @@ class CreateProjectCommand extends Command
     /**
      * @inheritDoc
      */
-    public function initialize(InputInterface $input, OutputInterface $output)
+    public function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new ConsoleStyle($input, $output);
     }
@@ -45,7 +45,7 @@ class CreateProjectCommand extends Command
     /**
      * @inheritDoc
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $question = new ChoiceQuestion('Create a new project?', array_keys(Project::getList()));
         $project = Project::newProject($this->io->askQuestion($question));

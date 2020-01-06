@@ -66,8 +66,9 @@ class Str
         $flip = $separator === '_' ? '-' : '_';
         $title = preg_replace('!['.preg_quote($flip, '/').']+!u', $separator, $title);
         // Replace @ with the word 'at'
+        $title = str_replace('@', $separator.'at'.$separator, $title);
         // Replace . with separator
-        $title = str_replace(['@', '.'], [$separator . 'at' . $separator, $separator], $title);
+        $title = str_replace('.', $separator, $title);
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
         $title = preg_replace('![^'.preg_quote($separator, '/').'\pL\pN\s]+!u', '', static::lower($title));
         // Replace all separator characters and whitespace by a single separator

@@ -3,13 +3,14 @@
 namespace App\Tests;
 
 use App\ConsoleStyle;
+use App\Exception\DockerSetupException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\NullOutput;
 
 class ProjectTest extends AbstractTestCase
 {
 
-    public function create_a_new_symfony_skeleton_project()
+    public function create_a_new_symfony_skeleton_project(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
@@ -17,7 +18,7 @@ class ProjectTest extends AbstractTestCase
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
     }
 
-    public function create_a_new_symfony_website_project()
+    public function create_a_new_symfony_website_project(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '1']);
 
@@ -25,7 +26,7 @@ class ProjectTest extends AbstractTestCase
         $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
     }
 
-    public function create_a_new_laravel_website_project()
+    public function create_a_new_laravel_website_project(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '2']);
 
@@ -34,7 +35,7 @@ class ProjectTest extends AbstractTestCase
     }
 
     /** @test */
-    public function format_buffer_text()
+    public function format_buffer_text(): void
     {
         $io = new ConsoleStyle(new ArgvInput(), new NullOutput());
         $buffer = [
@@ -49,18 +50,18 @@ class ProjectTest extends AbstractTestCase
     }
 
     /** @test */
-    public function check_if_folder_is_empty_before_trying_to_install_a_project()
+    public function check_if_folder_is_empty_before_trying_to_install_a_project(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
 
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
         $this->assertContains('Project already exists. Aborting...', $output);
     }
 
     /** @test */
-    public function delete_project()
+    public function delete_project(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
@@ -77,15 +78,15 @@ class ProjectTest extends AbstractTestCase
     }
 
     /** @test */
-    public function show_error_when_deleting_project_that_doesnt_exist()
+    public function show_error_when_deleting_project_that_doesnt_exist(): void
     {
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
         $this->assertContains('There are no files to delete...', $output);
     }
 
     /** @test */
-    public function delete_project_but_dont_delete_project_files()
+    public function delete_project_but_dont_delete_project_files(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
 

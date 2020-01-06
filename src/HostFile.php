@@ -56,7 +56,7 @@ class HostFile
      * @param $domain
      * @return bool
      */
-    public function add($domain)
+    public function add($domain): bool
     {
         $ipAddress = Config::get('hostIpAddress');
         $data = "{$ipAddress} {$domain}";
@@ -79,7 +79,7 @@ class HostFile
     {
         if ($this->fileManager->exists($hostFile = Config::get('rootDirectory').'/etc/hosts')) {
             $hostFileContent = $hostFile;
-            $pattern = '/'.preg_quote(Config::get('hostIpAddress')).' '.$domain.'/';
+            $pattern = '/'.preg_quote(Config::get('hostIpAddress'), '/').' '.$domain.'/';
             $hostFileContent = preg_replace($pattern, '', $hostFileContent);
             $this->fileManager->dumpFile(Config::get('rootDirectory').'/etc/hosts', $hostFileContent);
         }

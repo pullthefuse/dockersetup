@@ -84,9 +84,9 @@ class SSL implements SSLInterface
     public function createCertificates($domain): void
     {
         $config = [
-            "digest_alg" => "AES-128-CBC",
-            "private_key_bits" => 4096,
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+            'digest_alg' => 'AES-128-CBC',
+            'private_key_bits' => 4096,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
         ];
 
         $dn = ['commonName' => $domain];

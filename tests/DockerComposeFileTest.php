@@ -2,10 +2,12 @@
 
 namespace App\Tests;
 
+use App\Exception\DockerSetupException;
+
 class DockerComposeFileTest extends AbstractTestCase
 {
     /** @test */
-    public function show_the_correct_docker_compose_command_on_success()
+    public function show_the_correct_docker_compose_command_on_success(): void
     {
         $output = $this->runApp([], ['dev.example.com', 'yes', '0', '0', 0, 'None']);
 
@@ -13,7 +15,7 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function create_docker_compose_file_without_domain_argument_and_domain_question_answered()
+    public function create_docker_compose_file_without_domain_argument_and_domain_question_answered(): void
     {
         $output = $this->runApp([], ['dev.example.com', 'yes', '0', '0', 0, 'None']);
 
@@ -23,9 +25,9 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function create_docker_compose_file_without_domain_argument_and_domain_question_empty()
+    public function create_docker_compose_file_without_domain_argument_and_domain_question_empty(): void
     {
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
 
         $output = $this->runApp([], ['', 'yes', '0', '0', 0, 'None']);
 
@@ -34,7 +36,7 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function create_docker_compose_file_with_domain_argument()
+    public function create_docker_compose_file_with_domain_argument(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
@@ -44,7 +46,7 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function create_docker_compose_file_without_ssl()
+    public function create_docker_compose_file_without_ssl(): void
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['no', '0', '0', 0, 'None']);
 
@@ -53,11 +55,11 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function only_allow_setup_to_be_run_once_with_a_domain()
+    public function only_allow_setup_to_be_run_once_with_a_domain(): void
     {
         $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
 
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
 
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes']);
 
@@ -65,9 +67,9 @@ class DockerComposeFileTest extends AbstractTestCase
     }
 
     /** @test */
-    public function check_that_exception_is_thrown_if_ds_proxy_or_proxy_is_used_as_domain_name()
+    public function check_that_exception_is_thrown_if_ds_proxy_or_proxy_is_used_as_domain_name(): void
     {
-        $this->expectException('App\Exception\DockerSetupException');
+        $this->expectException(DockerSetupException::class);
 
         $output = $this->runApp(['domain' => 'proxy', ['yes']]);
 
