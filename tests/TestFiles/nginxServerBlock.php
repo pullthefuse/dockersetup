@@ -4,7 +4,7 @@ server {
 
     server_name dev.example.com;
 
-    root /var/www/dev.example.com/public;
+    root /var/www/html/dev.example.com/public;
 
     index index.php index.html index.htm app_dev.php;
 

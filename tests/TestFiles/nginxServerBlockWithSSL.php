@@ -7,7 +7,7 @@ server {
     ssl_certificate /etc/tls/dev.example.com.crt;
     ssl_certificate_key /etc/tls/dev.example.com.key;
 
-    root /var/www/dev.example.com/public;
+    root /var/www/html/dev.example.com/public;
 
     index index.php index.html index.htm app_dev.php;
 
