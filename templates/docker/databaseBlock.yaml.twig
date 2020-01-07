@@ -1,6 +1,6 @@
-    db_{{ db.type }}:
+    db_{{ db.type }}_{{ db.version|slug }}:
         image: {{ db.image }}
-        container_name: db_{{ db.type }}
+        container_name: db_{{ db.type }}_{{ db.version|slug }}
         {{ db.command is defined ? 'command: ' ~ db.command : '' }}
         ports:
             - {{ db.port }}

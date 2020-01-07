@@ -2,9 +2,9 @@
         image: {{ docker.services.web.php[php.version].image }}
         container_name: web_{{ domain|slug }}
         volumes:
-            - {{ code_directory }}/{{ domain }}:/var/www/{{ domain }}
+            - {{ code_directory }}/{{ domain }}:/var/www/html/{{ domain }}
             - {{ root_directory }}/php/dockerSetup.ini:/usr/local/etc/php/conf.d/dockerSetup.ini
-        working_dir: {{ code_directory }}/{{ domain }}
+        working_dir: /var/www/html/{{ domain }}
         environment:
 {% for key, env in docker.services.web.environment %}
             {{ key }}: {{ env }}

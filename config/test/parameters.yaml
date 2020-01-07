@@ -22,9 +22,8 @@ parameters:
           _default:
             port: 3306
             environment:
-              MYSQL_ROOT_PASSWORD: root
-              MYSQL_USER: user
-              MYSQL_PASSWORD: root
+              MYSQL_ROOT_USER: root
+              MYSQL_ROOT_PASSWORD: secret
         postgres:
           12:
             image: postgres:12
@@ -35,8 +34,8 @@ parameters:
           _default:
             port: 5432
             environment:
-              POSTGRES_USER: user
-              POSTGRES_PASSWORD: root
+              POSTGRES_USER: root
+              POSTGRES_PASSWORD: secret
       web:
         php:
           '7.4':
