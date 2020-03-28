@@ -33,9 +33,9 @@ class ConfigTest extends AbstractTestCase
     /** @test */
     public function generate_port_mappings_on_setup(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', '0', 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', '0', 'None']);
 
-        $this->assertEquals($this->portMappings(), file_get_contents('/data/test/docker-setup/config/default/databaseMappings.json'));
+        $this->assertEquals($this->portMappings(), file_get_contents(Config::get('rootDirectory').'/config/default/databaseMappings.json'));
     }
 
     private function portMappings()

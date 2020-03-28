@@ -9,20 +9,20 @@ class SSLCertificateTest extends AbstractTestCase
     /** @test */
     public function createSSLCertificate(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
         $this->assertContains('Creating SSL certificates...', $output);
-        $this->assertFileExists('/data/test/docker-setup/tls/dev.example.com.key');
-        $this->assertFileExists('/data/test/docker-setup/tls/dev.example.com.crt');
+        $this->assertFileExists(getenv('DIR').'/tls/dev.example.com.key');
+        $this->assertFileExists(getenv('DIR').'/tls/dev.example.com.crt');
     }
 
     /** @test */
     public function updateSSLCertificate(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
-        $oldCertificate = file_get_contents('/data/test/docker-setup/tls/dev.example.com.crt');
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
+        $oldCertificate = file_get_contents(getenv('DIR').'/tls/dev.example.com.crt');
         $output = $this->runApp(['domain' => 'dev.example.com'], [], 'docker:ssl:update');
-        $newCertificate = file_get_contents('/data/test/docker-setup/tls/dev.example.com.crt');
+        $newCertificate = file_get_contents(getenv('DIR').'/tls/dev.example.com.crt');
 
         $this->assertContains('Deleting old SSL certificates...', $output);
         $this->assertContains('Renewing SSL certificates...', $output);
@@ -41,8 +41,8 @@ class SSLCertificateTest extends AbstractTestCase
     /** @test */
     public function view_domain_certificates_expiry_date(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
-        $this->runApp(['domain' => 'dev.example2.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example2.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
         $output = $this->runApp([], [], 'docker:ssl:status');
 

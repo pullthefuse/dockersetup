@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Config;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -48,7 +49,7 @@ abstract class AbstractTestCase extends KernelTestCase
     public function tearDown(): void
     {
         $filesystem = self::$container->get('filesystem');
-        $filesystem->remove('/data/test');
+        $filesystem->remove(Config::get('rootDirectory'));
 
         parent::tearDown();
     }

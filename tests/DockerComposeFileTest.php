@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Config;
 use App\Exception\DockerSetupException;
 
 class DockerComposeFileTest extends AbstractTestCase
@@ -9,19 +10,19 @@ class DockerComposeFileTest extends AbstractTestCase
     /** @test */
     public function show_the_correct_docker_compose_command_on_success(): void
     {
-        $output = $this->runApp([], ['dev.example.com', 'yes', '0', '0', 0, 'None']);
+        $output = $this->runApp([], ['dev.example.com', 'yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertStringContainsString('docker-compose -f /data/test/docker-setup/docker/config/dev.example.com.yaml up -d', $output);
+        $this->assertStringContainsString('docker-compose -f '.getenv('DIR').'/docker/config/dev.example.com.yaml up -d', $output);
     }
 
     /** @test */
     public function create_docker_compose_file_without_domain_argument_and_domain_question_answered(): void
     {
-        $output = $this->runApp([], ['dev.example.com', 'yes', '0', '0', 0, 'None']);
+        $output = $this->runApp([], ['dev.example.com', 'yes', 'no', '0', '0', 0, 'None']);
 
         $this->assertContains('What is your domain?', $output);
         $this->assertContains('Creating docker-compose file...', $output);
-        $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', '/data/test/docker-setup/docker/config/dev.example.com.yaml');
+        $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
     /** @test */
@@ -29,35 +30,44 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $this->expectException(DockerSetupException::class);
 
-        $output = $this->runApp([], ['', 'yes', '0', '0', 0, 'None']);
+        $output = $this->runApp([], ['', 'yes', 'no', '0', '0', 0, 'None']);
 
         $this->assertContains('Exiting setup...', $output);
-        $this->assertFileNotExists('/data/test/docker-setup/docker/config/dev.example.com.yaml');
+        $this->assertFileNotExists(getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
     /** @test */
     public function create_docker_compose_file_with_domain_argument(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
         $this->assertNotContains('What is your domain?', $output);
         $this->assertContains('Creating docker-compose file...', $output);
-        $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', '/data/test/docker-setup/docker/config/dev.example.com.yaml');
+        $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
     /** @test */
     public function create_docker_compose_file_without_ssl(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['no', '0', '0', 0, 'None']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['no', 'no', '0', '0', 0, 'None']);
 
         $this->assertContains('Creating docker-compose file...', $output);
-        $this->assertFileEquals(__DIR__.'/TestFiles/dockerComposeWithoutSSL.yaml', '/data/test/docker-setup/docker/config/dev.example.com.yaml');
+        $this->assertFileEquals(__DIR__.'/TestFiles/dockerComposeWithoutSSL.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
+    }
+
+    /** @test */
+    public function create_docker_compose_file_with_nfs(): void
+    {
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'yes', '0', '0', 0, 'None']);
+
+        $this->assertContains('Creating docker-compose file...', $output);
+        $this->assertFileEquals(__DIR__.'/TestFiles/dockerComposeWithNFS.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
     /** @test */
     public function only_allow_setup_to_be_run_once_with_a_domain(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
         $this->expectException(DockerSetupException::class);
 
@@ -71,7 +81,7 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $this->expectException(DockerSetupException::class);
 
-        $output = $this->runApp(['domain' => 'proxy', ['yes']]);
+        $output = $this->runApp(['domain' => 'proxy', ['yes', 'no']]);
 
         $this->assertContains('Proxy cannot be set as a domain. Aborting...', $output);
     }

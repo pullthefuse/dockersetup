@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class SetupCommand extends Command
 {
@@ -125,7 +126,9 @@ class SetupCommand extends Command
 
         $this->io->text('Creating docker-compose file...');
 
-        $this->dockerCompose->create($domain, $this->io, $ssl);
+        $nfs = $this->setupNFS();
+
+        $this->dockerCompose->create($domain, $this->io, $ssl, $nfs);
 
         $question = new ChoiceQuestion('Create a new project?', array_merge(array_keys(Project::getList()), ['None']), 'None');
         $answer = $this->io->askQuestion($question);
@@ -188,5 +191,17 @@ class SetupCommand extends Command
         $input->setArgument('domain', $domain);
 
         return $domain;
+    }
+
+    /**
+     * Check if nfsmount should be used.
+     *
+     * @return bool
+     */
+    private function setupNFS(): bool
+    {
+        $question = new ConfirmationQuestion('Are you using nfs?');
+
+        return $this->io->askQuestion($question);
     }
 }

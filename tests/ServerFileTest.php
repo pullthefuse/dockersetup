@@ -19,22 +19,22 @@ class ServerFileTest extends AbstractTestCase
     {
         self::$container->get(NginxServer::class)->setup();
 
-        $this->assertFileEquals(__DIR__.'/TestFiles/nginxHttpBlock.php', '/data/test/docker-setup/nginx/nginx.conf');
+        $this->assertFileEquals(__DIR__.'/TestFiles/nginxHttpBlock.php', getenv('DIR').'/nginx/nginx.conf');
     }
 
     /** @test */
     public function create_nginx_server_block_for_non_ssl_only(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['no', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['no', 'no', '0', '0', 0, 'None']);
 
-        $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlock.php', '/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
+        $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlock.php', getenv('DIR').'/nginx/sites-enabled/dev.example.com.conf');
     }
 
     /** @test */
     public function create_nginx_server_block_for_ssl(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlockWithSSL.php', '/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
+        $this->assertFileEquals(__DIR__.'/TestFiles/nginxServerBlockWithSSL.php', getenv('DIR').'/nginx/sites-enabled/dev.example.com.conf');
     }
 }

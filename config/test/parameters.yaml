@@ -5,7 +5,7 @@ parameters:
   host_ip_address: '127.0.0.1'
   host_file: '%env(DIR)%/etc/hosts'
   docker:
-    version: 3
+    version: 3.4
     network: general
     services:
       nginx:

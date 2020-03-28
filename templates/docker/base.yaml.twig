@@ -1,9 +1,13 @@
 {% apply spaceless %}
-version: "{{ docker.version }}"
+version: '{{ docker.version }}'
 services:
 {% for key, service in services %}
 {% include service %}
 {% endfor %}
 networks:
     {{ docker.network }}:
+{% if nfs %}volumes:
+    nfsmount:
+        external: true
+{% endif %}
 {% endapply %}

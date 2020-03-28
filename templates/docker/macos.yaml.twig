@@ -1,0 +1,9 @@
+version: '{{ docker.version }}'
+volumes:
+    nfsmount:
+        name: nfsmount
+        driver: local
+        driver_opts:
+            type: nfs
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+            device: ':{{ code_directory }}'

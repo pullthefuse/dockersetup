@@ -12,8 +12,9 @@ interface DockerComposeInterface
      * @param string $domain
      * @param StyleInterface $io
      * @param bool $ssl
+     * @param bool $nfs
      */
-    public function create(string $domain, StyleInterface $io, bool $ssl = false): void;
+    public function create(string $domain, StyleInterface $io, bool $ssl = false, bool $nfs = false): void;
 
     /**
      * Delete Docker-compose file.

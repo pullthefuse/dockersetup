@@ -1,4 +1,4 @@
-version: "3"
+version: '3.4'
 services:
     nginx_ds_proxy:
         image: nginx:latest

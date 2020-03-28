@@ -59,11 +59,12 @@ class DockerCompose implements DockerComposeInterface
     /**
      * @inheritDoc
      */
-    public function create(string $domain, StyleInterface $io, bool $ssl = false): void
+    public function create(string $domain, StyleInterface $io, bool $ssl = false, bool $nfs = false): void
     {
         $config = array_merge(Config::all(), [
             'domain' => $domain,
             'ssl' => $ssl,
+            'nfs' => $nfs,
             'services' => [
                 'nginx' => 'docker/nginxBlock.yaml.twig'
             ]
@@ -74,8 +75,10 @@ class DockerCompose implements DockerComposeInterface
 
             if (isset($this->settings['database'])) {
                 $rootDirectory = Config::get('rootDirectory');
-                $portMappings = json_decode($this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"),
-                    JSON_OBJECT_AS_ARRAY, 512, JSON_THROW_ON_ERROR);
+                $portMappings = json_decode(
+                    $this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"),
+                    JSON_OBJECT_AS_ARRAY, 512, JSON_THROW_ON_ERROR
+                );
                 $db = $config['docker']['services']['db'][$this->settings['database']][$this->settings['databaseVersion']];
 
                 $config['db'] = array_merge([
@@ -93,6 +96,11 @@ class DockerCompose implements DockerComposeInterface
             ];
 
             $config['services']['web'] = 'docker/webBlock.yaml.twig';
+        }
+
+        if ($nfs) {
+            $content = $this->twig->render('docker/macos.yaml.twig', $config);
+            $this->fileManager->createFileContent('docker/config/macos.yaml', $content);
         }
 
         $content = $this->twig->render('docker/base.yaml.twig', $config);

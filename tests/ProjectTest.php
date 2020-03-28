@@ -12,26 +12,26 @@ class ProjectTest extends AbstractTestCase
 
     public function create_a_new_symfony_skeleton_project(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
 
         $this->assertContains('A Symfony project has been successfully created...', $output);
-        $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
+        $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
     public function create_a_new_symfony_website_project(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '1']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '1']);
 
         $this->assertContains('A Symfony project has been successfully created...', $output);
-        $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
+        $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
     public function create_a_new_laravel_website_project(): void
     {
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '2']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '2']);
 
         $this->assertContains('A Laravel project has been successfully created...', $output);
-        $this->assertFileExists('/data/test/docker-setup/code/dev.example.com/composer.json');
+        $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
     /** @test */
@@ -52,29 +52,29 @@ class ProjectTest extends AbstractTestCase
     /** @test */
     public function check_if_folder_is_empty_before_trying_to_install_a_project(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
 
         $this->expectException(DockerSetupException::class);
 
-        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
         $this->assertContains('Project already exists. Aborting...', $output);
     }
 
     /** @test */
     public function delete_project(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, 'None']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
         $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
 
-        $hostFileContent = file_get_contents('/data/test/docker-setup/etc/hosts');
+        $hostFileContent = file_get_contents(getenv('DIR').'/etc/hosts');
         $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
-        $this->assertFileNotExists('/data/test/docker-setup/tls/dev.example.com.key');
-        $this->assertFileNotExists('/data/test/docker-setup/tls/dev.example.com.crt');
-        $this->assertFileNotExists('/data/test/docker-setup/nginx/proxy/sites-enabled/dev.example.com.conf');
-        $this->assertFileNotExists('/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
-        $this->assertFileNotExists('/data/test/docker-setup/docker/config/dev.example.com.yaml');
-        $this->assertDirectoryNotExists('/data/test/docker-setup/code/dev.example.com');
+        $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.key');
+        $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.crt');
+        $this->assertFileNotExists(getenv('DIR').'/nginx/proxy/sites-enabled/dev.example.com.conf');
+        $this->assertFileNotExists(getenv('DIR').'/nginx/sites-enabled/dev.example.com.conf');
+        $this->assertFileNotExists(getenv('DIR').'/docker/config/dev.example.com.yaml');
+        $this->assertDirectoryNotExists(getenv('DIR').'/code/dev.example.com');
     }
 
     /** @test */
@@ -88,17 +88,17 @@ class ProjectTest extends AbstractTestCase
     /** @test */
     public function delete_project_but_dont_delete_project_files(): void
     {
-        $this->runApp(['domain' => 'dev.example.com'], ['yes', '0', '0', 0, '0']);
+        $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
 
         $this->runApp(['domain' => 'dev.example.com'], ['no'], 'docker:project:delete');
 
-        $hostFileContent = file_get_contents('/data/test/docker-setup/etc/hosts');
+        $hostFileContent = file_get_contents(getenv('DIR').'/etc/hosts');
         $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
-        $this->assertFileNotExists('/data/test/docker-setup/tls/dev.example.com.key');
-        $this->assertFileNotExists('/data/test/docker-setup/tls/dev.example.com.crt');
-        $this->assertFileNotExists('/data/test/docker-setup/nginx/proxy/sites-enabled/dev.example.com.conf');
-        $this->assertFileNotExists('/data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf');
-        $this->assertFileNotExists('/data/test/docker-setup/docker/config/dev.example.com.yaml');
-        $this->assertDirectoryExists('/data/test/docker-setup/code/dev.example.com');
+        $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.key');
+        $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.crt');
+        $this->assertFileNotExists(getenv('DIR').'/nginx/proxy/sites-enabled/dev.example.com.conf');
+        $this->assertFileNotExists(getenv('DIR').'/nginx/sites-enabled/dev.example.com.conf');
+        $this->assertFileNotExists(getenv('DIR').'/docker/config/dev.example.com.yaml');
+        $this->assertDirectoryExists(getenv('DIR').'/code/dev.example.com');
     }
 }
