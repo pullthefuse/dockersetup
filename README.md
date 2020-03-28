@@ -21,7 +21,7 @@ Use ```bin/console docker``` to see the available commands. To setup a domain fr
 ### MacOS
 You will need to install the docker client and in the preferences set the directory you are using.
 
-#### Performance
+#### MacOS Performance
 For performance you will need to setup nfs
 
 Add or create the ``` /etc/exports ``` file and put in the following:
@@ -32,20 +32,36 @@ Add or create the ``` /etc/exports ``` file and put in the following:
 Pre Catalina
  ``` /Users -alldirs -mapall=0:0,501:20 localhost ```
 
-You will be prompted by the macos to make this change accept the change
+You will be prompted by the MacOS to make this change accept the change
 
 Add ``` nfs.server.mount.require_resv_port = 0 ``` to your ``` /etc/nfs.conf ```
 
 Then restart nfsd
 ``` sudo nfsd restart ```
 
-** For older versions of macos use ``` /Users ```  instead of ``` /System/Volumes/Data/Users ``` for your NFS_CODE_DIR
+In the docker directory that's created edit the .env file as follows:
 
-You will need to run ``` docker-compose -f macos.yml up -d ``` to create the nfs volume that's required. Once the volume is created you will not need to run it again.
+```
+NFS_CODE_DIRECTORY=/System/Volumes/Data/Users/{ YOUR USERNAME }/{ DIRECTORY PATH OF YOUR CODE }
+CODE_PERFORMANCE_OPTIONS=:cached
+DOCKER_PERFORMANCE_OPTIONS=:ro
+``` 
+
+** For older versions of MacOS use ``` /Users ```  instead of ``` /System/Volumes/Data/Users ``` for your NFS_CODE_DIRECTORY
+
+You will need to run ``` docker-compose -f MacOS.yml up -d ``` to create the nfs volume that's required. Once the volume is created you will not need to run it again.
 
 ### Customize Settings
 Nginx settings - Currently after the files are created you will have to go in and update the settings you wish to change.
 Docker images/settings - You can go to the docker-compose files and change the images or any of the settings before running docker-compose up.
+
+### Performance Settings
+To improve performance you can add the following to the .env that is locatied with the docker-compose files.
+
+```
+CODE_PERFORMANCE_OPTIONS=:cached,delegated
+DOCKER_PERFORMANCE_OPTIONS=:ro
+```
 
 ### Multiple Database Versions
 We support multiple database versions. If you use the current version on the initial install it will be on the normal port so 3306 for mysql.

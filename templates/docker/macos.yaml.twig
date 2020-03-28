@@ -6,4 +6,4 @@ volumes:
         driver_opts:
             type: nfs
             o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-            device: ':{{ code_directory }}'
+            device: ':${NFS_CODE_DIRECTORY}'

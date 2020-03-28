@@ -98,7 +98,7 @@ class DockerCompose implements DockerComposeInterface
             $config['services']['web'] = 'docker/webBlock.yaml.twig';
         }
 
-        if ($nfs) {
+        if ($nfs && !$this->fileManager->exists('docker/config/macos.yaml')) {
             $content = $this->twig->render('docker/macos.yaml.twig', $config);
             $this->fileManager->createFileContent('docker/config/macos.yaml', $content);
         }
@@ -122,6 +122,8 @@ class DockerCompose implements DockerComposeInterface
      */
     public function setup(StyleInterface $io): void
     {
+        $content = $this->twig->render('docker/env.yaml.twig');
+        $this->fileManager->createFileContent('docker/config/.env', $content);
         $this->create('proxy', $io);
     }
 

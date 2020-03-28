@@ -3,21 +3,21 @@
         container_name: nginx_{{ domain == 'proxy' ? 'ds_' : '' }}{{ domain|slug }}
 {% if domain == 'proxy' %}
         volumes:
-            - {{ root_directory }}/nginx/proxy/sites-enabled:/etc/nginx/sites-enabled
-            - {{ root_directory }}/nginx/proxy/nginx.conf:/etc/nginx/nginx.conf
-            - {{ root_directory }}/tls:/etc/tls
+            - {{ root_directory }}/nginx/proxy/sites-enabled:/etc/nginx/sites-enabled${DOCKER_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/nginx/proxy/nginx.conf:/etc/nginx/nginx.conf${DOCKER_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/tls:/etc/tls${DOCKER_PERFORMANCE_OPTIONS}
         ports:
             - 80:80
             - 443:443
 {% else %}
         working_dir: /var/www/html/{{ domain }}
         volumes:
-            - {{ nfs ? 'nfsmount' : code_directory }}:/var/www/html
-            - {{ root_directory }}/nginx/sites-enabled/{{ domain }}.conf:/etc/nginx/sites-enabled/{{ domain }}.conf
-            - {{ root_directory }}/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - {{ nfs ? 'nfsmount' : code_directory }}:/var/www/html${CODE_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/nginx/sites-enabled/{{ domain }}.conf:/etc/nginx/sites-enabled/{{ domain }}.conf${DOCKER_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/nginx/nginx.conf:/etc/nginx/nginx.conf${DOCKER_PERFORMANCE_OPTIONS}
 {% if ssl %}
-            - {{ root_directory }}/tls/{{ domain }}.key:/etc/tls/{{ domain }}.key
-            - {{ root_directory }}/tls/{{ domain }}.crt:/etc/tls/{{ domain }}.crt
+            - {{ root_directory }}/tls/{{ domain }}.key:/etc/tls/{{ domain }}.key${DOCKER_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/tls/{{ domain }}.crt:/etc/tls/{{ domain }}.crt${DOCKER_PERFORMANCE_OPTIONS}
 {% endif %}
         depends_on:
             - web_{{ domain|slug }}

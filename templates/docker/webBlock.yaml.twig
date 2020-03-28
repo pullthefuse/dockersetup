@@ -2,8 +2,8 @@
         image: {{ docker.services.web.php[php.version].image }}
         container_name: web_{{ domain|slug }}
         volumes:
-            - {{ nfs ? 'nfsmount' : code_directory }}:/var/www/html
-            - {{ root_directory }}/php/dockerSetup.ini:/usr/local/etc/php/conf.d/dockerSetup.ini
+            - {{ nfs ? 'nfsmount' : code_directory }}:/var/www/html${CODE_PERFORMANCE_OPTIONS}
+            - {{ root_directory }}/php/dockerSetup.ini:/usr/local/etc/php/conf.d/dockerSetup.ini${DOCKER_PERFORMANCE_OPTIONS}
         working_dir: /var/www/html/{{ domain }}
         environment:
 {% for key, env in docker.services.web.environment %}
