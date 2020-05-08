@@ -5,7 +5,7 @@ services:
         container_name: nginx_dev_example_com
         working_dir: /var/www/html/dev.example.com
         volumes:
-            - nfsmount:/var/www/html${CODE_PERFORMANCE_OPTIONS}
+            - ds_nfsmount:/var/www/html${CODE_PERFORMANCE_OPTIONS}
             - /data/test/docker-setup/nginx/sites-enabled/dev.example.com.conf:/etc/nginx/sites-enabled/dev.example.com.conf${DOCKER_PERFORMANCE_OPTIONS}
             - /data/test/docker-setup/nginx/nginx.conf:/etc/nginx/nginx.conf${DOCKER_PERFORMANCE_OPTIONS}
             - /data/test/docker-setup/tls/dev.example.com.key:/etc/tls/dev.example.com.key${DOCKER_PERFORMANCE_OPTIONS}
@@ -33,7 +33,7 @@ services:
         image: pullthefuse/php:7.4-fpm-alpine-dev
         container_name: web_dev_example_com
         volumes:
-            - nfsmount:/var/www/html${CODE_PERFORMANCE_OPTIONS}
+            - ds_nfsmount:/var/www/html${CODE_PERFORMANCE_OPTIONS}
             - /data/test/docker-setup/php/dockerSetup.ini:/usr/local/etc/php/conf.d/dockerSetup.ini${DOCKER_PERFORMANCE_OPTIONS}
         working_dir: /var/www/html/dev.example.com
         environment:
@@ -43,5 +43,5 @@ services:
 networks:
     general:
 volumes:
-    nfsmount:
+    ds_nfsmount:
         external: true

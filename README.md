@@ -49,7 +49,7 @@ DOCKER_PERFORMANCE_OPTIONS=:ro
 
 ** For older versions of MacOS use ``` /Users ```  instead of ``` /System/Volumes/Data/Users ``` for your NFS_CODE_DIRECTORY
 
-You will need to run ``` docker-compose -f MacOS.yml up -d ``` to create the nfs volume that's required. Once the volume is created you will not need to run it again.
+You will need to run ``` docker-compose -f macos.yml up -d ``` to create the nfs volume that's required. Once the volume is created you will not need to run it again.
 
 ### Customize Settings
 Nginx settings - Currently after the files are created you will have to go in and update the settings you wish to change.

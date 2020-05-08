@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use App\Config;
 use App\Exception\DockerSetupException;
 
 class DockerComposeFileTest extends AbstractTestCase

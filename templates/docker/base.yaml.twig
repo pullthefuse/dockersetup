@@ -7,7 +7,7 @@ services:
 networks:
     {{ docker.network }}:
 {% if nfs %}volumes:
-    nfsmount:
+    ds_nfsmount:
         external: true
 {% endif %}
 {% endapply %}

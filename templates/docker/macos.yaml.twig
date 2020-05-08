@@ -1,7 +1,7 @@
 version: '{{ docker.version }}'
 volumes:
-    nfsmount:
-        name: nfsmount
+    ds_nfsmount:
+        name: ds_nfsmount
         driver: local
         driver_opts:
             type: nfs
