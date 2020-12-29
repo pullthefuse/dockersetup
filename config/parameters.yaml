@@ -38,12 +38,14 @@ parameters:
               POSTGRES_PASSWORD: secret
       web:
         php:
+          '8.0':
+            image: pullthefuse/php:8.0-fpm-alpine-dev
           '7.4':
             image: pullthefuse/php:7.4-fpm-alpine-dev
           '7.3':
             image: pullthefuse/php:7.3-fpm-alpine-dev
           '7.2':
-            image: jamescastro/php:7.3-fpm-alpine-dev
+            image: pullthefuse/php:7.2-fpm-alpine-dev
         environment:
           XDEBUG_CONFIG: remote_host=
   http:
