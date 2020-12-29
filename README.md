@@ -4,13 +4,13 @@ Create all the files you need to run your applications from docker files in your
 ***This software has only been tested on MacOs and Linux*
 
 ## Instructions 
-From the directory you wish to install the code run the following command to auto run the domain setup. Follow the instructions to setup your hosts file and up your docker-compose files when its finished.
+From the directory you wish to install the code run the following command to auto run the domain setup. Follow the instructions to update your hosts file and up your docker-compose files when its finished.
 
 ```
 docker run -it --rm --env DIR=${PWD} -v ${PWD}:${PWD} pullthefuse/dockersetup:latest
 ```
 
-The following command will run the container and open bash which will allow you to setup, delete and use various other commands.
+The following command will run the container and open bash which will allow you to run the setup manually, delete and use various other commands.
 
 ```
 docker run -it --rm --env DIR=${PWD} -v ${PWD}:${PWD} pullthefuse/dockersetup:latest /bin/bash
@@ -56,7 +56,7 @@ Nginx settings - Currently after the files are created you will have to go in an
 Docker images/settings - You can go to the docker-compose files and change the images or any of the settings before running docker-compose up.
 
 ### Performance Settings
-To improve performance you can add the following to the .env that is locatied with the docker-compose files.
+To improve performance you can add the following to the .env that is located with the docker-compose files.
 
 ```
 CODE_PERFORMANCE_OPTIONS=:cached,delegated
@@ -66,7 +66,7 @@ DOCKER_PERFORMANCE_OPTIONS=:ro
 ### Multiple Database Versions
 We support multiple database versions. If you use the current version on the initial install it will be on the normal port so 3306 for mysql.
 
-If you use version lower it will drop a port number so mysql will be on port 3305 and so on.
+If you use a version lower it will drop a port number so mysql will be on port 3305 and so on.
 
 ### Docker Images
 All the Dockerfiles used to create the custom images can be found [here](https://github.com/pullthefuse/docker)
