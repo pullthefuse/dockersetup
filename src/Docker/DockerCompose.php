@@ -44,7 +44,7 @@ class DockerCompose implements DockerComposeInterface
     public function interact(StyleInterface $io): void
     {
         $phpVersions = Config::get('docker.services.web.php');
-        $this->settings['phpVersion'] = $io->choice('What PHP version do you wish to install?', array_keys($phpVersions), '7.4');
+        $this->settings['phpVersion'] = $io->choice('What PHP version do you wish to install?', array_keys($phpVersions), '8.0');
 
         $databases = Config::get('docker.services.db');
         $this->settings['database'] = $io->choice('What database do you wish to use', array_merge(array_keys($databases), ['None']), 'mysql');
