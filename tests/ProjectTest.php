@@ -14,7 +14,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
 
-        $this->assertContains('A Symfony project has been successfully created...', $output);
+        $this->assertStringContainsString('A Symfony project has been successfully created...', $output);
         $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
@@ -22,7 +22,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '1']);
 
-        $this->assertContains('A Symfony project has been successfully created...', $output);
+        $this->assertStringContainsString('A Symfony project has been successfully created...', $output);
         $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
@@ -30,7 +30,7 @@ class ProjectTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '2']);
 
-        $this->assertContains('A Laravel project has been successfully created...', $output);
+        $this->assertStringContainsString('A Laravel project has been successfully created...', $output);
         $this->assertFileExists(getenv('DIR').'/code/dev.example.com/composer.json');
     }
 
@@ -57,7 +57,7 @@ class ProjectTest extends AbstractTestCase
         $this->expectException(DockerSetupException::class);
 
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, '0']);
-        $this->assertContains('Project already exists. Aborting...', $output);
+        $this->assertStringContainsString('Project already exists. Aborting...', $output);
     }
 
     /** @test */
@@ -68,7 +68,7 @@ class ProjectTest extends AbstractTestCase
         $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
 
         $hostFileContent = file_get_contents(getenv('DIR').'/etc/hosts');
-        $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
+        $this->assertStringNotContainsString('127.0.0.1 dev.example.com', $hostFileContent);
         $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.key');
         $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.crt');
         $this->assertFileNotExists(getenv('DIR').'/nginx/proxy/sites-enabled/dev.example.com.conf');
@@ -82,7 +82,7 @@ class ProjectTest extends AbstractTestCase
     {
         $this->expectException(DockerSetupException::class);
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes'], 'docker:project:delete');
-        $this->assertContains('There are no files to delete...', $output);
+        $this->assertStringContainsString('There are no files to delete...', $output);
     }
 
     /** @test */
@@ -93,7 +93,7 @@ class ProjectTest extends AbstractTestCase
         $this->runApp(['domain' => 'dev.example.com'], ['no'], 'docker:project:delete');
 
         $hostFileContent = file_get_contents(getenv('DIR').'/etc/hosts');
-        $this->assertNotContains('127.0.0.1 dev.example.com', $hostFileContent);
+        $this->assertStringNotContainsString('127.0.0.1 dev.example.com', $hostFileContent);
         $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.key');
         $this->assertFileNotExists(getenv('DIR').'/tls/dev.example.com.crt');
         $this->assertFileNotExists(getenv('DIR').'/nginx/proxy/sites-enabled/dev.example.com.conf');

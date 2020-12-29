@@ -19,8 +19,8 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $output = $this->runApp([], ['dev.example.com', 'yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertContains('What is your domain?', $output);
-        $this->assertContains('Creating docker-compose file...', $output);
+        $this->assertStringContainsString('What is your domain?', $output);
+        $this->assertStringContainsString('Creating docker-compose file...', $output);
         $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
@@ -31,7 +31,7 @@ class DockerComposeFileTest extends AbstractTestCase
 
         $output = $this->runApp([], ['', 'yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertContains('Exiting setup...', $output);
+        $this->assertStringContainsString('Exiting setup...', $output);
         $this->assertFileNotExists(getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
@@ -40,8 +40,8 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertNotContains('What is your domain?', $output);
-        $this->assertContains('Creating docker-compose file...', $output);
+        $this->assertStringNotContainsString('What is your domain?', $output);
+        $this->assertStringContainsString('Creating docker-compose file...', $output);
         $this->assertFileEquals(__DIR__.'/TestFiles/dockerCompose.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
@@ -50,7 +50,7 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['no', 'no', '0', '0', 0, 'None']);
 
-        $this->assertContains('Creating docker-compose file...', $output);
+        $this->assertStringContainsString('Creating docker-compose file...', $output);
         $this->assertFileEquals(__DIR__.'/TestFiles/dockerComposeWithoutSSL.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
@@ -59,7 +59,7 @@ class DockerComposeFileTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'yes', '0', '0', 0, 'None']);
 
-        $this->assertContains('Creating docker-compose file...', $output);
+        $this->assertStringContainsString('Creating docker-compose file...', $output);
         $this->assertFileEquals(__DIR__.'/TestFiles/dockerComposeWithNFS.yaml', getenv('DIR').'/docker/config/dev.example.com.yaml');
     }
 
@@ -72,7 +72,7 @@ class DockerComposeFileTest extends AbstractTestCase
 
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes']);
 
-        $this->assertContains('Domain already exists', $output);
+        $this->assertStringContainsString('Domain already exists', $output);
     }
 
     /** @test */
@@ -82,6 +82,6 @@ class DockerComposeFileTest extends AbstractTestCase
 
         $output = $this->runApp(['domain' => 'proxy', ['yes', 'no']]);
 
-        $this->assertContains('Proxy cannot be set as a domain. Aborting...', $output);
+        $this->assertStringContainsString('Proxy cannot be set as a domain. Aborting...', $output);
     }
 }

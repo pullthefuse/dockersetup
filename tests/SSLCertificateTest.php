@@ -11,7 +11,7 @@ class SSLCertificateTest extends AbstractTestCase
     {
         $output = $this->runApp(['domain' => 'dev.example.com'], ['yes', 'no', '0', '0', 0, 'None']);
 
-        $this->assertContains('Creating SSL certificates...', $output);
+        $this->assertStringContainsString('Creating SSL certificates...', $output);
         $this->assertFileExists(getenv('DIR').'/tls/dev.example.com.key');
         $this->assertFileExists(getenv('DIR').'/tls/dev.example.com.crt');
     }
@@ -24,8 +24,8 @@ class SSLCertificateTest extends AbstractTestCase
         $output = $this->runApp(['domain' => 'dev.example.com'], [], 'docker:ssl:update');
         $newCertificate = file_get_contents(getenv('DIR').'/tls/dev.example.com.crt');
 
-        $this->assertContains('Deleting old SSL certificates...', $output);
-        $this->assertContains('Renewing SSL certificates...', $output);
+        $this->assertStringContainsString('Deleting old SSL certificates...', $output);
+        $this->assertStringContainsString('Renewing SSL certificates...', $output);
         $this->assertNotEquals($oldCertificate, $newCertificate);
     }
 
@@ -35,7 +35,7 @@ class SSLCertificateTest extends AbstractTestCase
         $this->expectException(DockerSetupException::class);
         $output = $this->runApp(['domain' => 'dev.example.com'], [], 'docker:ssl:update');
 
-        $this->assertContains('Domain doesn\'t exist', $output);
+        $this->assertStringContainsString('Domain doesn\'t exist', $output);
     }
 
     /** @test */
@@ -46,7 +46,7 @@ class SSLCertificateTest extends AbstractTestCase
 
         $output = $this->runApp([], [], 'docker:ssl:status');
 
-        $this->assertContains('dev.example.com - Certificate Expires:', $output);
-        $this->assertContains('dev.example2.com - Certificate Expires:', $output);
+        $this->assertStringContainsString('dev.example.com - Certificate Expires:', $output);
+        $this->assertStringContainsString('dev.example2.com - Certificate Expires:', $output);
     }
 }
