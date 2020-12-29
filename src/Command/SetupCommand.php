@@ -194,7 +194,7 @@ class SetupCommand extends Command
     }
 
     /**
-     * Check if nfsmount should be used.
+     * Check if ds_nfsmount should be used.
      *
      * @return bool
      */
