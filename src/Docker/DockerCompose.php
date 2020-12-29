@@ -73,7 +73,7 @@ class DockerCompose implements DockerComposeInterface
         if ($domain !== 'proxy') {
             $this->interact($io);
 
-            if (isset($this->settings['database']) && $this->settings['database']) {
+            if (isset($this->settings['database']) && $this->settings['database'] !== 'None') {
                 $rootDirectory = Config::get('rootDirectory');
                 $portMappings = json_decode(
                     $this->fileManager->getFileContents("{$rootDirectory}/config/default/databaseMappings.json"),
